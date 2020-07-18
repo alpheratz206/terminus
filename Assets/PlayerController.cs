@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Character))]
 [RequireComponent(typeof(CharacterBehaviour))]
 public class PlayerController : MonoBehaviour
 {
-    private Player player;
+    private Character character;
     private CharacterBehaviour ai;
 
     private Camera mainCamera;
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        player = new Player();
+        character = GetComponent<Character>();
         ai = GetComponent<CharacterBehaviour>();
 
         mainCamera = Camera.main;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private void HandleLeftClick()
         => MouseClick(hit =>
                {
+                   character.RemoveFocus();
                    ai.MoveTo(hit.point);
                    ai.StopFollowing();
                }, 
@@ -44,7 +46,7 @@ public class PlayerController : MonoBehaviour
                {
                    if(hit.collider.TryGetComponent(out Interactable focus))
                    {
-                       focus.TryInteract(this.transform);
+                       character.SetFocus(focus);
                        ai.Follow(focus);
                    }
                }

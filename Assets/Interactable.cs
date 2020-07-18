@@ -22,7 +22,7 @@ namespace Assets
             Gizmos.DrawWireSphere(transform.position, interactionRadius);
         }
 
-        public Guid TryInteract(Transform interestedParty)
+        public Guid BeginInteract(Transform interestedParty)
         {
             var interactionId = Guid.NewGuid();
 
@@ -32,6 +32,15 @@ namespace Assets
             StartCoroutine(whenInRange);
 
             return interactionId;
+        }
+
+        public void CancelInteract(Guid id)
+        {
+            if(interestedParties.TryGetValue(id, out IEnumerator ongoing))
+            {
+                StopCoroutine(ongoing);
+                interestedParties.Remove(id);
+            }
         }
 
         private IDictionary<Guid, IEnumerator> interestedParties

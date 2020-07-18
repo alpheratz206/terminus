@@ -63,9 +63,11 @@ namespace Assets
 
         private void Face(Transform focus)
         {
+            var vectorDirection = (focus.position - transform.position).normalized;
+
             Quaternion newRotation
                 = Quaternion.LookRotation(
-                    (focus.position - transform.position).normalized
+                    new Vector3(vectorDirection.x, 0f, vectorDirection.z)
                 );
 
             transform.rotation 
