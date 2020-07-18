@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +24,11 @@ public class CameraController : MonoBehaviour
     private const string scrollWheelAxisName = "Mouse ScrollWheel";
     private const string horizontalAxisName = "Horizontal";
 
+    private void Start()
+    {
+        PartyController.Instance.OnPlayerChange.Add(x => SwitchFocus(x.transform));
+    }
+
     private void Update()
     {
         zoom -= Input.GetAxis(scrollWheelAxisName) * zoomSpeed;
@@ -39,4 +45,8 @@ public class CameraController : MonoBehaviour
         transform.RotateAround(focus.position, Vector3.up, yaw);
     }
 
+    public void SwitchFocus(Transform newFocus)
+    {
+        Debug.Log($"Camera moves!");
+    }
 }
