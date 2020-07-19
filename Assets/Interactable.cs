@@ -29,7 +29,7 @@ namespace Assets
 
         public virtual void Interact() 
         {
-            Debug.Log($"Interacting with {this.name}");
+            //Debug.Log($"Interacting with {this.name}");
         }
 
         public Guid BeginInteract(Transform interestedParty)

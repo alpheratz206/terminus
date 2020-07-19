@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(CharacterBehaviour))]
@@ -34,8 +35,14 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    void test()
+    {
+        Debug.Log("testing 123");
+    }
+
     void Update()
     {
+
         if (Input.GetMouseButtonDown(0))
             HandleLeftClick();
 
@@ -66,6 +73,9 @@ public class PlayerController : MonoBehaviour
 
     private void MouseClick(Action<RaycastHit> onHit, LayerMask? mask = null)
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         RaycastHit hit;
 
         bool raycastSuccess =

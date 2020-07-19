@@ -1,0 +1,79 @@
+{
+  "Name": "Alistair Theirin",
+  "Dialogue": [
+    {
+      "Prompt": "What's you name?",
+      "Lines": [
+        {
+          "Text": "My name is Alistair, soon to be King Alistair I, of...",
+          "Length": 2
+        },
+        {
+          "Text": "...well, of wherever this is.",
+          "Length": 2
+        }
+      ]
+    },
+    {
+      "Prompt": "What's your deal?",
+      "Lines": [
+        {
+          "Text": "My \"deal\", as you put it, is that I am the rightful King of this land.",
+          "Length": 3
+        },
+        {
+          "Text": "I await the hour of liberty, when my birthright is recognised and I an free to claim my crown.",
+          "Length": 4
+        }
+      ],
+      "Dialogue": [
+        {
+          "Prompt": "When, exactly, is the hour of liberty?",
+          "Lines": [
+            {
+              "Text": "What?",
+              "Length": 1
+            },
+            {
+              "Text": "The hour of liberty is the coming of the new dawn! The birth of true justice, freedom, and democracy!",
+              "Length": 4
+            }
+          ],
+          "Dialogue": [
+            {
+              "Prompt": "Yes, but *when* will that happen?",
+              "Lines": [
+                {
+                  "Text": "When... well, I mean, it will happen when the time is just!",
+                  "Length": 3
+                },
+                {
+                  "Text": "You can't rush these things, you know.",
+                  "Length": 2
+                }
+              ]
+            },
+            {
+              "Prompt": "Democracy? Didn't you say you were going to be King?",
+              "Lines": [
+                {
+                  "Text": "Yes, of a rightly constitutional parliamentary democracy.",
+                  "Length": 2
+                },
+                {
+                  "Text": "Checks and balances, separation of powers, all that.",
+                  "Length": 2
+                },
+                {
+                  "Text": "Rightful Kings of the realm can be decent people as well you know!",
+                  "Length": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]  
+}
+      
