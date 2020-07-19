@@ -31,6 +31,23 @@ namespace Assets
         public void MoveTo(Vector3 point)
             => agent.SetDestination(point);
 
+        private void Face(Transform focus)
+        {
+            var vectorDirection = (focus.position - transform.position).normalized;
+
+            Quaternion newRotation
+                = Quaternion.LookRotation(
+                    new Vector3(vectorDirection.x, 0f, vectorDirection.z)
+                );
+
+            transform.rotation
+                = Quaternion.Slerp(
+                    transform.rotation,
+                    newRotation,
+                    LookRotationSpeed
+                );
+        }
+
 
         #region Follow Target
 
@@ -40,9 +57,9 @@ namespace Assets
 
             agent.stoppingDistance = focus.stoppingDistance;
             agent.updateRotation = false;
-            agent.SetDestination(focus.transform.position);
+            agent.SetDestination(focus.interactionTransform.position);
 
-            following = Follow(focus.transform);
+            following = Follow(focus.interactionTransform);
             StartCoroutine(following);
         }
 
@@ -60,23 +77,6 @@ namespace Assets
             => following != null;
 
         #endregion
-
-        private void Face(Transform focus)
-        {
-            var vectorDirection = (focus.position - transform.position).normalized;
-
-            Quaternion newRotation
-                = Quaternion.LookRotation(
-                    new Vector3(vectorDirection.x, 0f, vectorDirection.z)
-                );
-
-            transform.rotation 
-                = Quaternion.Slerp(
-                    transform.rotation,
-                    newRotation,
-                    LookRotationSpeed
-                );
-        }
 
         #region Coroutines
 

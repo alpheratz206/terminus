@@ -10,6 +10,9 @@ namespace Assets
 {
     public class Interactable : MonoBehaviour
     {
+        #region Editor Variables
+
+        public Transform interactionTransform;
         public float interactionRadius = 1.5f;
         public float stoppingDistance 
         {
@@ -19,7 +22,14 @@ namespace Assets
         public void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, interactionRadius);
+            Gizmos.DrawWireSphere(interactionTransform.position, interactionRadius);
+        }
+
+        #endregion
+
+        public virtual void Interact() 
+        {
+            Debug.Log($"Interacting with {this.name}");
         }
 
         public Guid BeginInteract(Transform interestedParty)
@@ -48,10 +58,10 @@ namespace Assets
 
         private IEnumerator CheckForInteraction(Transform interestedParty, Guid id)
         {
-            while(Vector3.Distance(interestedParty.position, transform.position) > interactionRadius)
+            while(Vector3.Distance(interestedParty.position, interactionTransform.position) > interactionRadius)
                 yield return null;
 
-            Debug.Log($"Interacting with {this.name}");
+            Interact();
 
             interestedParties.Remove(id);
         }

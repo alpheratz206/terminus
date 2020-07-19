@@ -28,18 +28,33 @@ namespace Assets
 
         public GameObject playerCharacter;
 
-        public GameObject testPartyMember;
+        private PartyMember playerPartyMember
+        {
+            get => Party.FirstOrDefault(x => x.GameObject == playerCharacter);
+            set => playerCharacter = value.GameObject;
+        }
 
-        public IList<GameObject> party
+        public List<GameObject> testPartyMembers
             = new List<GameObject>();
+
+        public Party Party
+            = new Party();
 
         public IList<Action<GameObject>> OnPlayerChange
             = new List<Action<GameObject>>();
 
         private void Start()
         {
-            party.Add(playerCharacter);
-            party.Add(testPartyMember);
+            var playerController = playerCharacter.AddComponent<PlayerController>();
+            playerController.moveablePlaces = LayerMask.GetMask("Ground");
+
+            OnPlayerChange.Add(x => PlayerController.Instance.Migrate(x));
+
+            Party.Add(playerCharacter);
+            foreach(var x in testPartyMembers)
+            {
+                Party.Add(x);
+            }
         }
 
         private void Update()
@@ -56,24 +71,57 @@ namespace Assets
             if (Input.GetKeyDown(KeyCode.Alpha4))
                 SwitchPlayerControl(4);
 
+            if (Input.GetKeyDown(KeyCode.F))
+                ToggleAllFollow();
+
+        }
+
+        private void ToggleAllFollow()
+        {
+            Party.bAllFollowing = !Party.bAllFollowing;
+
+            foreach (var partyMember in Party)
+            {
+                if (partyMember.GameObject == playerCharacter)
+                    continue;
+
+                SetFollowPlayer(partyMember, Party.bAllFollowing);
+            }
+        }
+
+        private void SetFollowPlayer(PartyMember partyMember, bool bFollow = true)
+        {
+            var ai = partyMember.GameObject.GetComponent<CharacterBehaviour>();
+
+            partyMember.bFollowing = bFollow;
+
+            if (bFollow)
+                ai.Follow(playerCharacter.GetComponent<Interactable>());
+            else
+                ai.StopFollowing();
         }
 
         private void SwitchPlayerControl(GameObject character)
-        {
-            if (!party.Contains(character) || playerCharacter == character)
-                return;
-
-            playerCharacter = character;
-
-            OnPlayerChange.InvokeAll(playerCharacter);
-        }
+            => SwitchPlayerControl(
+                    Party.FindIndex(
+                            x => x.GameObject == character
+                        )
+                );
 
         private void SwitchPlayerControl(int position)
         {
-            if (party.Count < position || playerCharacter == party[position-1])
+            if (position < 0 
+             || Party.Count < position 
+             || playerPartyMember == Party[position-1])
                 return;
 
-            playerCharacter = party[position-1];
+            PartyMember oldPlayer = playerPartyMember;
+
+            playerPartyMember = Party[position-1];
+
+            SetFollowPlayer(playerPartyMember, false);
+            if (Party.bAllFollowing)
+                SetFollowPlayer(oldPlayer);
 
             OnPlayerChange.InvokeAll(playerCharacter);
         }

@@ -8,6 +8,18 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterBehaviour))]
 public class PlayerController : MonoBehaviour
 {
+    #region Singleton
+    public static PlayerController Instance;
+
+    private void Awake()
+    {
+        if (Instance != null)
+            Destroy(Instance);
+
+        Instance = this;
+    }
+    #endregion
+
     private Character character;
     private CharacterBehaviour ai;
 
@@ -63,5 +75,11 @@ public class PlayerController : MonoBehaviour
 
         if (raycastSuccess)
             onHit(hit);
+    }
+
+    public void Migrate(GameObject newPlayer)
+    {
+        var successor = newPlayer.AddComponent<PlayerController>();
+        successor.moveablePlaces = this.moveablePlaces;
     }
 }

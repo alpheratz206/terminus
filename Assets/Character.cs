@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class Character : MonoBehaviour
+    public class Character : Interactable
     {
         private Interactable Focus { get; set; }
         private Guid InteractionID { get; set; }
@@ -15,6 +15,7 @@ namespace Assets
 
         public void SetFocus(Interactable newFocus)
         {
+            RemoveFocus();
             Focus = newFocus;
             InteractionID = newFocus.BeginInteract(transform);
         }
