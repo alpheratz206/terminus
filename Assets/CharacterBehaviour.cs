@@ -14,6 +14,7 @@ namespace Assets
     {
         #region Editor Variables
 
+        public float followingDistance = 4f;
         public float lookRotationSpeed = 5f;
         public float LookRotationSpeed
         {
@@ -49,39 +50,67 @@ namespace Assets
         }
 
 
-        #region Follow Target
+        #region Interact
 
-        public void Follow(Interactable focus)
+        public void Interact(Interactable focus)
         {
-            StopFollowing();
+            StopInteracting();
 
             agent.stoppingDistance = focus.stoppingDistance;
             agent.updateRotation = false;
             agent.SetDestination(focus.interactionTransform.position);
 
-            following = Follow(focus.interactionTransform);
-            StartCoroutine(following);
+            Interacting = Interact(focus.interactionTransform);
+            StartCoroutine(Interacting);
+        }
+
+        public void StopInteracting()
+        {
+            if (!isInteracting())
+                return;
+
+            StopCoroutine(Interacting);
+            Interacting = null;
+            agent.updateRotation = true;
+        }
+
+        public bool isInteracting()
+            => Interacting != null;
+
+        #endregion
+
+        #region Follow
+
+        public void StartFollowing(Transform leader)
+        {
+            StopFollowing();
+
+            agent.stoppingDistance = followingDistance;
+
+            agent.SetDestination(leader.position);
+
+            Following = Follow(leader);
+            StartCoroutine(Following);
         }
 
         public void StopFollowing()
         {
-            if (!IsFollowing())
+            if (!isFollowing())
                 return;
 
-            StopCoroutine(following);
-            following = null;
-            agent.updateRotation = true;
+            StopCoroutine(Following);
+            Following = null;
         }
 
-        public bool IsFollowing()
-            => following != null;
+        public bool isFollowing()
+            => Following != null;
 
         #endregion
 
         #region Coroutines
 
-        private IEnumerator following;
-        private IEnumerator Follow(Transform focus)
+        private IEnumerator Interacting;
+        private IEnumerator Interact(Transform focus)
         {
             while (agent.pathPending)
                 yield return null;
@@ -90,6 +119,27 @@ namespace Assets
             {
                 agent.SetDestination(focus.position);
                 Face(focus);
+                yield return null;
+            }
+        }
+
+        private IEnumerator Following;
+        private IEnumerator Follow(Transform leader)
+        {
+            while (agent.pathPending)
+                yield return null;
+
+            while (true)
+            {
+                if (agent.isPathComplete())
+                {
+                    //formation / idle
+                }
+                else
+                {
+                    agent.SetDestination(leader.position);
+                }
+
                 yield return null;
             }
         }

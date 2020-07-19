@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
                {
                    character.RemoveFocus();
                    ai.MoveTo(hit.point);
-                   ai.StopFollowing();
+                   ai.StopInteracting();
                }, 
                mask: moveablePlaces
            );
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
                    if(hit.collider.TryGetComponent(out Interactable focus))
                    {
                        character.SetFocus(focus);
-                       ai.Follow(focus);
+                       ai.Interact(focus);
                    }
                }
            );

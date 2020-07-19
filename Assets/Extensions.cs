@@ -15,5 +15,13 @@ namespace Assets
             foreach(var action in actions)
                 action(arg);
         }
+
+        public static bool isPathComplete(this UnityEngine.AI.NavMeshAgent agent)
+        {
+            var dist = Vector3.Distance(agent.destination, agent.transform.position);
+
+            return (dist <= agent.stoppingDistance
+                && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f));
+        }
     }
 }

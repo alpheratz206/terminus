@@ -96,7 +96,7 @@ namespace Assets
             partyMember.bFollowing = bFollow;
 
             if (bFollow)
-                ai.Follow(playerCharacter.GetComponent<Interactable>());
+                ai.StartFollowing(playerCharacter.transform);
             else
                 ai.StopFollowing();
         }
