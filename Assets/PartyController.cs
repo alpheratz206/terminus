@@ -28,6 +28,8 @@ namespace Assets
 
         public GameObject playerCharacter;
 
+        public GameObject testPartyMember;
+
         public IList<GameObject> party
             = new List<GameObject>();
 
@@ -37,6 +39,7 @@ namespace Assets
         private void Start()
         {
             party.Add(playerCharacter);
+            party.Add(testPartyMember);
         }
 
         private void Update()
@@ -55,17 +58,24 @@ namespace Assets
 
         }
 
+        private void SwitchPlayerControl(GameObject character)
+        {
+            if (!party.Contains(character) || playerCharacter == character)
+                return;
+
+            playerCharacter = character;
+
+            OnPlayerChange.InvokeAll(playerCharacter);
+        }
+
         private void SwitchPlayerControl(int position)
         {
-            Debug.Log($"Switching to player {position}");
-
-            if (party.Count < position/* || playerCharacter == party[position]*/)
+            if (party.Count < position || playerCharacter == party[position-1])
                 return;
 
             playerCharacter = party[position-1];
 
-            foreach (var action in OnPlayerChange)
-                action(playerCharacter);
+            OnPlayerChange.InvokeAll(playerCharacter);
         }
     }
 }

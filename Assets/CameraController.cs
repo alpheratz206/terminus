@@ -17,9 +17,13 @@ public class CameraController : MonoBehaviour
     public float zoomSpeed = 2f;
 
     public float yaw = 0f;
-    public float yawSpeed;
+    public float yawSpeed = 100f;
+
+    public float lerpSpeed = 30f;
 
     #endregion
+
+    private bool bAutoUpdateCamera = true;
 
     private const string scrollWheelAxisName = "Mouse ScrollWheel";
     private const string horizontalAxisName = "Horizontal";
@@ -39,14 +43,60 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = focus.position + (offset * zoom);
-        transform.LookAt(focus.position + (Vector3.up * pitch));
+        if (!bAutoUpdateCamera)
+            return;
 
-        transform.RotateAround(focus.position, Vector3.up, yaw);
+        SetCamera(this.transform, this.focus);
     }
+
+    private void SetCamera(Transform cam, Transform target)
+    {
+        cam.position = target.position + (offset * zoom);
+        cam.LookAt(target.position + (Vector3.up * pitch));
+        cam.RotateAround(target.position, Vector3.up, yaw);
+    }
+
+    Transform simulatedCamera;
 
     public void SwitchFocus(Transform newFocus)
     {
-        Debug.Log($"Camera moves!");
+        StopAllCoroutines();
+
+        if(simulatedCamera && simulatedCamera.gameObject)
+            Destroy(simulatedCamera.gameObject);
+
+        StartCoroutine(MoveCamera(newFocus));
+    }
+
+    private IEnumerator MoveCamera(Transform newFocus)
+    {
+        bAutoUpdateCamera = false;
+
+        float t = 0f;
+        var startingPos = transform.position;
+        var startingRot = transform.rotation;
+
+        var dist = Vector3.Distance(startingPos, newFocus.position + (offset * zoom));
+        var lerpDuration = dist / lerpSpeed;
+
+        simulatedCamera = new GameObject().transform;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * (Time.timeScale / lerpDuration);
+
+            SetCamera(simulatedCamera, newFocus);
+
+            transform.position = Vector3.Lerp(startingPos, simulatedCamera.position, t);
+            transform.rotation = Quaternion.Slerp(startingRot, simulatedCamera.rotation, t);
+
+            yield return null;
+        }
+
+        Destroy(simulatedCamera.gameObject);
+
+        focus = newFocus;
+
+        bAutoUpdateCamera = true;
     }
 }
