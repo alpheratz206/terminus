@@ -58,21 +58,23 @@ public class DialogueController : MonoBehaviour
 
         currentOptions.AddRange(dialogue.Dialogue);
 
-        UpdateUI();
+        RefreshUI();
 
         dialogueUI.SetActive(true);
     }
 
-    private void UpdateUI()
+    private void RefreshUI()
     {
         //remove existing options
+
+        int i = 1;
 
         foreach(var option in currentOptions)
         {
             var optionUI = Instantiate(dialogueOption);
 
             optionUI.transform.SetParent(optionsList.transform);
-            optionUI.GetComponentInChildren<TextMeshProUGUI>().text = option.Prompt;
+            optionUI.GetComponentInChildren<TextMeshProUGUI>().text = $"{i++}. {option.Prompt}";
             optionUI.GetComponent<Button>().onClick.AddListener(() => EnterNode(option));
         }
     }
@@ -80,5 +82,15 @@ public class DialogueController : MonoBehaviour
     private void EnterNode(DialogueNode node)
     {
         Debug.Log("Entering new node!");
+    }
+
+    private IEnumerator SpeakDialogue(Queue<DialogueLine> lines)
+    {
+        while(lines.Count > 0)
+        {
+            var line = lines.Dequeue();
+
+            yield return new WaitForSeconds(line.Length);
+        }
     }
 }

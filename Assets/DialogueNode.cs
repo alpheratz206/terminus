@@ -10,7 +10,7 @@ namespace Assets
     public class DialogueNode
     {
         public string Prompt { get; set; }
-        public IList<DialogueLine> Lines { get; set; }
+        public Queue<DialogueLine> Lines { get; set; }
         public IList<DialogueNode> Dialogue { get; set; }
     }
 }
