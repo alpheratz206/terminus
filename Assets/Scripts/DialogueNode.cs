@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,24 @@ namespace Assets
     public class DialogueNode
     {
         public string Prompt { get; set; }
-        public Queue<DialogueLine> Lines { get; set; }
+        public IList<DialogueLine> Lines { get; set; }
         public IList<DialogueNode> Dialogue { get; set; }
+        public bool Persist { get; set; }
+        public string Action { get; set; }
+
+        public void ExecuteAction()
+        {
+            if(Enum.TryParse(Action, out DialogueActionType actionType)
+            && DialogueActionDictionary.TryGetValue(actionType, out Action f))
+                f();
+        }
+
+        [JsonIgnore]
+        public static Dictionary<DialogueActionType, Action> DialogueActionDictionary
+            = new Dictionary<DialogueActionType, Action>() 
+            { 
+                { DialogueActionType.EndDialogue, () => DialogueController.Instance.EndDialogue() } 
+            };
+
     }
 }

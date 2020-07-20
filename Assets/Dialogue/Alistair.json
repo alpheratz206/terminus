@@ -73,6 +73,17 @@
           ]
         }
       ]
+    },
+    {
+      "Prompt": "Goodbye.",
+      "Lines": [
+        {
+          "Text": "Be seeing you!",
+          "Length": 1
+        }
+      ],
+      "Persist": true,
+      "Action": "EndDialogue"
     }
   ]  
 }

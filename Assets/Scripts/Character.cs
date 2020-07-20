@@ -28,7 +28,8 @@ namespace Assets
         {
             base.Interact();
 
-            DialogueController.Instance.BeginDialogue(Dialogue);
+            if(Dialogue != null)
+                DialogueController.Instance.BeginDialogue(Dialogue);
         }
 
         public override void StopInteracting(Guid? interactionId = null)

@@ -70,6 +70,8 @@ public class DialogueController : MonoBehaviour
         dialogueUI.SetActive(false);
 
         currentOptions.Clear();
+
+        ClearDialogueHistory();
     }
 
     private void RefreshUI()
@@ -108,11 +110,9 @@ public class DialogueController : MonoBehaviour
 
     private IEnumerator SpeakDialogue(DialogueNode node)
     {
-        while(node.Lines.Count > 0)
+        foreach(var line in node.Lines)
         { 
             scrollBar.GetComponent<Scrollbar>().value = 0;
-
-            var line = node.Lines.Dequeue();
 
             var responseUI = Instantiate(dialogueResponse);
 
@@ -127,6 +127,8 @@ public class DialogueController : MonoBehaviour
 
     private void BranchDialogue(DialogueNode node)
     {
+        node.ExecuteAction();
+
         if(node.Dialogue != null)
         {
             currentOptions.Clear();
@@ -134,5 +136,11 @@ public class DialogueController : MonoBehaviour
         }
 
         RefreshUI();
+    }
+
+    private void ClearDialogueHistory()
+    {
+        foreach (Transform child in optionsList.transform)
+            Destroy(child.gameObject);
     }
 }

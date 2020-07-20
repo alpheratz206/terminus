@@ -1,4 +1,5 @@
 ﻿using Assets;
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +38,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetMouseButtonDown(0))
             HandleLeftClick();
 
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleLeftClick()
-        => MouseClick(hit =>
+        => Helper.MouseClick(hit =>
             {
                 character.RemoveFocus();
                 ai.MoveTo(hit.point);
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         );
 
     private void HandleRightClick()
-        => MouseClick(hit =>
+        => Helper.MouseClick(hit =>
             {
                 if(hit.collider.TryGetComponent(out Interactable focus))
                 {
@@ -65,22 +65,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         );
-
-    private void MouseClick(Action<RaycastHit> onHit, LayerMask? mask = null)
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-
-        RaycastHit hit;
-
-        bool raycastSuccess =
-            mask != null ?
-                Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out hit, 100f, mask.Value) :
-                Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out hit, 100f);
-
-        if (raycastSuccess)
-            onHit(hit);
-    }
 
     public void Migrate(GameObject newPlayer)
     {

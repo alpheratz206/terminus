@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,6 +61,9 @@ namespace Assets
 
         private void Update()
         {
+            if (Input.GetMouseButtonDown(0))
+                HandleLeftClick();
+
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 SwitchPlayerControl(1);
 
@@ -76,6 +80,14 @@ namespace Assets
                 ToggleAllFollow();
 
         }
+
+        private void HandleLeftClick()
+            => Helper.MouseClick(hit =>
+            {
+                if (Party.Contains(hit.collider.gameObject))
+                    SwitchPlayerControl(hit.collider.gameObject);
+            }
+        );
 
         private void ToggleAllFollow()
         {
@@ -111,7 +123,7 @@ namespace Assets
             => SwitchPlayerControl(
                     Party.FindIndex(
                             x => x.GameObject == character
-                        )
+                        ) + 1
                 );
 
         private void SwitchPlayerControl(int position)

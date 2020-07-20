@@ -17,6 +17,9 @@ namespace Assets
 
         public void AddRange(IEnumerable<GameObject> newMembers)
             => this.AddRange(newMembers);
+
+        public bool Contains(GameObject predMember)
+            => this.Any(x => x.GameObject == predMember);
     }
 
     public class PartyMember
