@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -131,7 +132,7 @@ public class DialogueController : MonoBehaviour
 
         if(node.Dialogue != null)
         {
-            currentOptions.Clear();
+            currentOptions = currentOptions.Where(x => x.Persist).ToList();
             currentOptions.AddRange(node.Dialogue);
         }
 
