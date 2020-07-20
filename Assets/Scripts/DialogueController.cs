@@ -63,9 +63,17 @@ public class DialogueController : MonoBehaviour
         dialogueUI.SetActive(true);
     }
 
+    public void EndDialogue()
+    {
+        dialogueUI.SetActive(false);
+
+        currentOptions.Clear();
+    }
+
     private void RefreshUI()
     {
-        //remove existing options
+        foreach(Transform child in optionsList.transform)
+            Destroy(child.gameObject);
 
         int i = 1;
 

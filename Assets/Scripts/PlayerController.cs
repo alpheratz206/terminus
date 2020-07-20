@@ -35,11 +35,6 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    void test()
-    {
-        Debug.Log("testing 123");
-    }
-
     void Update()
     {
 
@@ -52,24 +47,24 @@ public class PlayerController : MonoBehaviour
 
     private void HandleLeftClick()
         => MouseClick(hit =>
-               {
-                   character.RemoveFocus();
-                   ai.MoveTo(hit.point);
-                   ai.StopInteracting();
-               }, 
-               mask: moveablePlaces
-           );
+            {
+                character.RemoveFocus();
+                ai.MoveTo(hit.point);
+                ai.StopInteracting();
+            }, 
+            mask: moveablePlaces
+        );
 
     private void HandleRightClick()
         => MouseClick(hit =>
-               {
-                   if(hit.collider.TryGetComponent(out Interactable focus))
-                   {
-                       character.SetFocus(focus);
-                       ai.Interact(focus);
-                   }
-               }
-           );
+            {
+                if(hit.collider.TryGetComponent(out Interactable focus))
+                {
+                    character.SetFocus(focus);
+                    ai.Interact(focus);
+                }
+            }
+        );
 
     private void MouseClick(Action<RaycastHit> onHit, LayerMask? mask = null)
     {

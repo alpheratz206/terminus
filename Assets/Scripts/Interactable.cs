@@ -27,9 +27,14 @@ namespace Assets
 
         #endregion
 
-        public virtual void Interact() 
+        public virtual void Interact() { }
+        public virtual void StopInteracting(Guid? id = null)
         {
-            //Debug.Log($"Interacting with {this.name}");
+            if (id.HasValue && interestedParties.TryGetValue(id.Value, out IEnumerator ongoing))
+            {
+                StopCoroutine(ongoing);
+                interestedParties.Remove(id.Value);
+            }
         }
 
         public Guid BeginInteract(Transform interestedParty)

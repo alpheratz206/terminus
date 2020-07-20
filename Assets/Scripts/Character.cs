@@ -31,6 +31,13 @@ namespace Assets
             DialogueController.Instance.BeginDialogue(Dialogue);
         }
 
+        public override void StopInteracting(Guid? interactionId = null)
+        {
+            base.StopInteracting(interactionId);
+
+            DialogueController.Instance.EndDialogue();
+        }
+
         public void SetFocus(Interactable newFocus)
         {
             RemoveFocus();
@@ -42,7 +49,7 @@ namespace Assets
         {
             if (InteractionID != Guid.Empty)
             {
-                Focus.CancelInteract(InteractionID);
+                Focus.StopInteracting(InteractionID);
                 Focus = null;
                 InteractionID = Guid.Empty;
             }

@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        PartyController.Instance.OnPlayerChange.Add(x => SwitchFocus(x.transform));
+        PartyController.Instance.OnPlayerChange.Add((prevChar, newChar) => SwitchFocus(newChar.transform));
     }
 
     private void Update()

@@ -40,15 +40,16 @@ namespace Assets
         public Party Party
             = new Party();
 
-        public IList<Action<GameObject>> OnPlayerChange
-            = new List<Action<GameObject>>();
+        public IList<Action<GameObject, GameObject>> OnPlayerChange
+            = new List<Action<GameObject, GameObject>>();
 
         private void Start()
         {
             var playerController = playerCharacter.AddComponent<PlayerController>();
             playerController.moveablePlaces = LayerMask.GetMask("Ground");
 
-            OnPlayerChange.Add(x => PlayerController.Instance.Migrate(x));
+            OnPlayerChange.Add((prevChar, newChar) => PlayerController.Instance.Migrate(newChar));
+            OnPlayerChange.Add((prevChar, newChar) => prevChar.GetComponent<Character>().StopInteracting());
 
             Party.Add(playerCharacter);
             foreach(var x in testPartyMembers)
@@ -80,12 +81,17 @@ namespace Assets
         {
             Party.bAllFollowing = !Party.bAllFollowing;
 
+            SetAllFollow(Party.bAllFollowing);
+        }
+
+        private void SetAllFollow(bool bFollow = true)
+        {
             foreach (var partyMember in Party)
             {
                 if (partyMember.GameObject == playerCharacter)
                     continue;
 
-                SetFollowPlayer(partyMember, Party.bAllFollowing);
+                SetFollowPlayer(partyMember, bFollow);
             }
         }
 
@@ -115,15 +121,15 @@ namespace Assets
              || playerPartyMember == Party[position-1])
                 return;
 
-            PartyMember oldPlayer = playerPartyMember;
+            var oldPlayerChararcter = playerCharacter;
 
             playerPartyMember = Party[position-1];
 
             SetFollowPlayer(playerPartyMember, false);
             if (Party.bAllFollowing)
-                SetFollowPlayer(oldPlayer);
+                SetAllFollow(true);
 
-            OnPlayerChange.InvokeAll(playerCharacter);
+            OnPlayerChange.InvokeAll(oldPlayerChararcter, playerCharacter);
         }
     }
 }

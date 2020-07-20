@@ -69,6 +69,8 @@ namespace Assets
             if (!isInteracting())
                 return;
 
+            agent.stoppingDistance = 0f;
+
             StopCoroutine(Interacting);
             Interacting = null;
             agent.updateRotation = true;
@@ -86,7 +88,6 @@ namespace Assets
             StopFollowing();
 
             agent.stoppingDistance = followingDistance;
-
             agent.SetDestination(leader.position);
 
             Following = Follow(leader);
@@ -97,6 +98,9 @@ namespace Assets
         {
             if (!isFollowing())
                 return;
+
+            agent.ResetPath();
+            agent.stoppingDistance = 0f;
 
             StopCoroutine(Following);
             Following = null;
@@ -131,7 +135,7 @@ namespace Assets
 
             while (true)
             {
-                if (agent.isPathComplete())
+                if (agent.isPathComplete(leader.position))
                 {
                     //formation / idle
                 }
