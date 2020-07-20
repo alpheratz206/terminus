@@ -32,6 +32,12 @@ namespace Assets
         public void MoveTo(Vector3 point)
             => agent.SetDestination(point);
 
+        public void MoveTo(Vector3 point, Action onArrival)
+        {
+            MoveTo(point);
+            onArrival();
+        }
+
         private void Face(Transform focus)
         {
             var vectorDirection = (focus.position - transform.position).normalized;

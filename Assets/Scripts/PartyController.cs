@@ -51,6 +51,11 @@ namespace Assets
 
             OnPlayerChange.Add((prevChar, newChar) => PlayerController.Instance.Migrate(newChar));
             OnPlayerChange.Add((prevChar, newChar) => prevChar.GetComponent<Character>().StopInteracting());
+            OnPlayerChange.Add((prevChar, newChar) =>
+            {
+                prevChar.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                newChar.GetComponentInChildren<SpriteRenderer>().enabled = true;
+            });
 
             Party.Add(playerCharacter);
             foreach(var x in testPartyMembers)
