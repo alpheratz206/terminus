@@ -38,15 +38,21 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!ai.isResponsive)
+            return;
+
         if (Input.GetMouseButtonDown(0))
             HandleLeftClick();
 
         if (Input.GetMouseButtonDown(1))
             HandleRightClick();
+
+        if (Input.GetKeyDown(KeyCode.T))
+            ai.BeginTeleport();
     }
 
     private void HandleLeftClick()
-        => Helper.MouseClick(hit =>
+        => InputHelper.MouseClick(hit =>
             {
                 character.RemoveFocus();
                 ai.MoveTo(hit.point);
@@ -56,7 +62,7 @@ public class PlayerController : MonoBehaviour
         );
 
     private void HandleRightClick()
-        => Helper.MouseClick(hit =>
+        => InputHelper.MouseClick(hit =>
             {
                 if(hit.collider.TryGetComponent(out Interactable focus))
                 {

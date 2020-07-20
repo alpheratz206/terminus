@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Assets
         #endregion
 
         NavMeshAgent agent;
+        public bool isResponsive = true;
 
         private void Start()
             => agent = GetComponent<NavMeshAgent>();
@@ -32,10 +34,15 @@ namespace Assets
         public void MoveTo(Vector3 point)
             => agent.SetDestination(point);
 
-        public void MoveTo(Vector3 point, Action onArrival)
+        public void BeginTeleport()
         {
-            MoveTo(point);
-            onArrival();
+            StartCoroutine(
+                InputHelper.WaitForMouseClick(pos => 
+                    { agent.Warp(pos); isResponsive = true; },
+                    0,
+                    2
+                )
+            );
         }
 
         private void Face(Transform focus)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts
 {
-    public static class Helper
+    public static class InputHelper
     {
         public static void MouseClick(Action<RaycastHit> onHit, LayerMask? mask = null)
         {
@@ -24,6 +25,17 @@ namespace Assets.Scripts
 
             if (raycastSuccess)
                 onHit(hit);
+        }
+
+        public static IEnumerator WaitForMouseClick(Action<Vector3> onClick, int mouseBotton = 0, int delay = 0)
+        {
+            while (!Input.GetMouseButtonDown(mouseBotton))
+                yield return null;
+
+            if(delay > 0)
+                yield return new WaitForSeconds(delay);
+
+            MouseClick(hit => onClick(hit.point));
         }
     }
 }

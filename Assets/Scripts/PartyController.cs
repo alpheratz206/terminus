@@ -87,7 +87,7 @@ namespace Assets
         }
 
         private void HandleLeftClick()
-            => Helper.MouseClick(hit =>
+            => InputHelper.MouseClick(hit =>
             {
                 if (Party.Contains(hit.collider.gameObject))
                     SwitchPlayerControl(hit.collider.gameObject);
