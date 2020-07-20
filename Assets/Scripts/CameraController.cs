@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -35,8 +36,11 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        zoom -= Input.GetAxis(scrollWheelAxisName) * zoomSpeed;
-        zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            zoom -= Input.GetAxis(scrollWheelAxisName) * zoomSpeed;
+            zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
+        }
 
         yaw -= Input.GetAxis(horizontalAxisName) * yawSpeed * Time.deltaTime;
     }
