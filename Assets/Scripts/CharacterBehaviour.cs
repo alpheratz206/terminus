@@ -36,11 +36,12 @@ namespace Assets
 
         public void BeginTeleport()
         {
+            isResponsive = false;
             StartCoroutine(
                 InputHelper.WaitForMouseClick(pos => 
                     { agent.Warp(pos); isResponsive = true; },
                     0,
-                    2
+                    1.5f
                 )
             );
         }
