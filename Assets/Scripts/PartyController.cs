@@ -28,6 +28,7 @@ namespace Assets
         #endregion
 
         public GameObject playerCharacter;
+        public float FormationRadius = 3f;
 
         private PartyMember playerPartyMember
         {
@@ -83,6 +84,9 @@ namespace Assets
 
             if (Input.GetKeyDown(KeyCode.F))
                 ToggleAllFollow();
+
+            if (Input.GetKeyDown(KeyCode.G))
+                Party.FormAround(playerPartyMember, FormationRadius);
 
         }
 
