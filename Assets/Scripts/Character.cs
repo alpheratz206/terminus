@@ -20,16 +20,14 @@ namespace Assets
 
         private void Start()
         {
-            if(DialogueJson)
-                Dialogue = JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text);
+            Dialogue = DialogueJson ? JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text) : new DialogueTree();
         }
 
         public override void Interact()
         {
             base.Interact();
 
-            if(Dialogue != null)
-                DialogueController.Instance.BeginDialogue(Dialogue);
+            DialogueController.Instance.BeginDialogue(Dialogue);
         }
 
         public override void StopInteracting(Guid? interactionId = null)

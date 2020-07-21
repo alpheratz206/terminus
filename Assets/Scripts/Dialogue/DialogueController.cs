@@ -59,6 +59,12 @@ public class DialogueController : MonoBehaviour
     {
         header.GetComponentInChildren<TextMeshProUGUI>().text = dialogue.Name;
 
+        if(dialogue?.Dialogue == null)
+        {
+            Debug.Log(dialogue.NoDialogueGreeting);
+            return;
+        }
+
         currentOptions.AddRange(dialogue.Dialogue);
 
         RefreshUI();

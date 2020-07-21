@@ -85,6 +85,7 @@
       "Persist": true,
       "Action": "EndDialogue"
     }
-  ]  
+  ],
+  "NoDialogueGreeting":  "Await the hour of justice!"
 }
       

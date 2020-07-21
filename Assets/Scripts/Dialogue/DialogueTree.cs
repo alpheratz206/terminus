@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,11 @@ namespace Assets
     {
         public string Name { get; set; }
         public IList<DialogueNode> Dialogue { get; set; }
+        public string NoDialogueGreeting { get; set; }
+
+        public DialogueTree()
+        {
+            NoDialogueGreeting = "Hi there!";
+        }
     }
 }
