@@ -42,13 +42,20 @@ public class CameraController : MonoBehaviour
             zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
         }
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
+            StartCoroutine(ChangeYaw());
+    }
+
+    private IEnumerator ChangeYaw()
+    {
+        Cursor.visible = false;
+        while (Input.GetMouseButton(1))
         {
             yaw -= Input.GetAxis(horizontalAxisName) * yawSpeed * Time.deltaTime;
-            Cursor.visible = false;
+
+            yield return null;
         }
-        else
-            Cursor.visible = true;
+        Cursor.visible = true;
     }
 
     private void LateUpdate()
