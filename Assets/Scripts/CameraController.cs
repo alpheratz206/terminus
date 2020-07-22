@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
     public float zoomSpeed = 2f;
 
     public float yaw = 0f;
-    public float yawSpeed = 100f;
+    public float yawSpeed = 180f;
 
     public float lerpSpeed = 30f;
 
@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
     private bool bAutoUpdateCamera = true;
 
     private const string scrollWheelAxisName = "Mouse ScrollWheel";
-    private const string horizontalAxisName = "Horizontal";
+    private const string horizontalAxisName = "Mouse X";
 
     private void Start()
     {
@@ -42,7 +42,13 @@ public class CameraController : MonoBehaviour
             zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
         }
 
-        yaw -= Input.GetAxis(horizontalAxisName) * yawSpeed * Time.deltaTime;
+        if (Input.GetMouseButton(1))
+        {
+            yaw -= Input.GetAxis(horizontalAxisName) * yawSpeed * Time.deltaTime;
+            Cursor.visible = false;
+        }
+        else
+            Cursor.visible = true;
     }
 
     private void LateUpdate()
