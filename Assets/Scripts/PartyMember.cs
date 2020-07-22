@@ -14,7 +14,7 @@ namespace Assets
     {
         public bool bAllFollowing = false;
 
-        private int formationPos;
+        private int formationPos = -1;
         private int FormationPos
         {
             get => formationPos;
@@ -35,27 +35,29 @@ namespace Assets
             if (!this.Contains(focus))
                 return;
 
-            var playerRotation = focus.GameObject.transform.eulerAngles.y.InRadians();
+            var playerDirection = focus.GameObject.transform.forward;
+            var orthPlayerDirection = Vector3.Cross(playerDirection, Vector3.up).normalized;
 
-            float a = (float)(radius * Math.Sin(Math.PI - playerRotation));
-            float b = (float)(radius * Math.Cos(Math.PI - playerRotation));
+            var alpha = radius * playerDirection;
+            var beta = radius * orthPlayerDirection;
 
-            this.ForEach(x => x.Ai.MoveTo(GetNextFormationPos(focus.GameObject.transform.position, a, b)));
+            this.Where(x => x.bFollowing).ToList()
+                .ForEach(x => x.Ai.MoveTo(GetNextFormationPos(focus.GameObject.transform.position, alpha, beta)));
             formationPos = -1;
         }
 
-        private Vector3 GetNextFormationPos(Vector3 position, float a, float b)
+        private Vector3 GetNextFormationPos(Vector3 position, Vector3 a, Vector3 b)
         {
-            //swastika
-
+            Vector3 newPos;
             switch (++formationPos)
             {
-                case 0: return position;
-                case 1: return position - new Vector3(a + b, 0, -a + b);
-                case 2: return position - new Vector3(-a + b, 0, -a - b);
-                case 3: return position - new Vector3(2*b, 0, 2*a);
-                default: return position;
+                case 0: newPos = position - a + b; break;
+                case 1: newPos = position - a - b; break;
+                case 2: newPos = position - 2*a; break;
+                default: newPos = new Vector3(50, 0, 50); break;
             }
+
+            return newPos;
         }
     }
 
@@ -73,5 +75,11 @@ namespace Assets
 
         public GameObject GameObject { get; set; }
         public bool bFollowing { get; set; }
+        public Vector3 FormationPos { get; set; }
+
+        //public void StartFollowingPlayer()
+        //{
+        //    Ai.StartFollowing(FormationPos);
+        //}
     }
 }
