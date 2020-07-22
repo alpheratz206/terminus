@@ -62,7 +62,7 @@ namespace Assets
                 if (partyMember == focus)
                     continue;
 
-                partyMember.FormationPos = GetNextFormationPos(focus.GameObject.transform.position, alpha, beta);
+                partyMember.FormationOffset = GetNextFormationPos(focus.GameObject.transform.position, alpha, beta);
             }
 
             formationPos = -1;
@@ -72,9 +72,9 @@ namespace Assets
         {
             switch (++formationPos)
             {
-                case 0: return position - a + b;
-                case 1: return position - a - b;
-                case 2: return position - 2 * a;
+                case 0: return - a + b;
+                case 1: return - a - b;
+                case 2: return - 2 * a;
                 default: return new Vector3(50, 0, 50);
             }
         }
@@ -88,19 +88,19 @@ namespace Assets
         {
             this.GameObject = GameObject;
             this.bFollowing = bFollowing;
-            this.FormationPos = formationPos;
+            this.FormationOffset = formationPos;
 
             Ai = GameObject.GetComponent<CharacterBehaviour>();
         }
 
         public GameObject GameObject { get; set; }
         public bool bFollowing { get; set; }
-        public Vector3 FormationPos { get; set; }
+        public Vector3 FormationOffset { get; set; }
 
         public void StartFollowing(Transform leader)
         {
-            Ai.onFollowingIdle.Add(() => Ai.MoveTo(FormationPos));
-            Ai.StartFollowing(leader);
+            //Ai.onFollowingIdle.Add(() => Ai.MoveTo(FormationOffset));
+            Ai.StartFollowing(leader, FormationOffset);
         }
 
         public void StopFollowing()

@@ -100,7 +100,7 @@ public class CameraController : MonoBehaviour
 
         while (t < 1f)
         {
-            t += Time.deltaTime * (Time.timeScale / lerpDuration);
+            t += Time.unscaledDeltaTime * (1 / lerpDuration);
 
             SetCamera(simulatedCamera, newFocus);
 

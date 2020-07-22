@@ -101,14 +101,16 @@ namespace Assets
 
         #region Follow
 
-        public void StartFollowing(Transform leader)
+        public void StartFollowing(Transform leader, Vector3? offset = null)
         {
             StopFollowing();
 
-            agent.stoppingDistance = followingDistance;
+            if(offset == null)
+                agent.stoppingDistance = followingDistance;
+
             agent.SetDestination(leader.position);
 
-            Following = Follow(leader);
+            Following = Follow(leader, offset ?? Vector3.zero);
             StartCoroutine(Following);
         }
 
@@ -146,7 +148,7 @@ namespace Assets
         }
 
         private IEnumerator Following;
-        private IEnumerator Follow(Transform leader)
+        private IEnumerator Follow(Transform leader, Vector3 offset)
         {
             while (agent.pathPending)
                 yield return null;
@@ -157,17 +159,15 @@ namespace Assets
             {
                 if (agent.isPathComplete(leader.position) || (idling && !Input.GetMouseButtonDown(0)))
                 {
-                    //idling = true;
-                    //Debug.Log("A");
+                    idling = true;
                     //agent.stoppingDistance = 0f;
                     //onFollowingIdle.InvokeAll();
                 }
                 else
                 {
                     idling = false;
-                    Debug.Log("B");
-                    agent.stoppingDistance = followingDistance;
-                    agent.SetDestination(leader.position);
+                    //agent.stoppingDistance = followingDistance;
+                    agent.SetDestination(leader.position + offset);
                 }
 
                 yield return null;

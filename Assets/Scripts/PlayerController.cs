@@ -43,6 +43,17 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
             character.Ai.BeginTeleport();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            ToggleGamePlayPause();
+    }
+
+    private void ToggleGamePlayPause()
+    {
+        if(Time.timeScale == 1)
+            Time.timeScale = 0;
+        else if (Time.timeScale == 0)
+            Time.timeScale = 1;
     }
 
     private void HandleLeftClick()
