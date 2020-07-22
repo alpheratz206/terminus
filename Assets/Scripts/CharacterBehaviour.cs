@@ -25,9 +25,6 @@ namespace Assets
 
         #endregion
 
-        public IList<Action> onFollowingIdle
-            = new List<Action>();
-
         NavMeshAgent agent;
         public bool isResponsive = true;
 
@@ -160,13 +157,10 @@ namespace Assets
                 if (agent.isPathComplete(leader.position) || (idling && !Input.GetMouseButtonDown(0)))
                 {
                     idling = true;
-                    //agent.stoppingDistance = 0f;
-                    //onFollowingIdle.InvokeAll();
                 }
                 else
                 {
                     idling = false;
-                    //agent.stoppingDistance = followingDistance;
                     agent.SetDestination(leader.position + offset);
                 }
 

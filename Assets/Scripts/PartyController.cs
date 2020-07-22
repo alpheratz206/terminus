@@ -63,7 +63,6 @@ namespace Assets
             {
                 Party.Add(x);
             }
-            Party.SetFormation(playerPartyMember, FormationRadius);
         }
 
         private void Update()
@@ -85,9 +84,6 @@ namespace Assets
 
             if (Input.GetKeyDown(KeyCode.F))
                 ToggleAllFollow();
-
-            if (Input.GetKeyDown(KeyCode.G))
-                Party.FormAround(playerPartyMember, FormationRadius);
 
         }
 
