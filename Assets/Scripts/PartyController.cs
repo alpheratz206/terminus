@@ -118,14 +118,12 @@ namespace Assets
 
         private void SetFollowPlayer(PartyMember partyMember, bool bFollow = true)
         {
-            var ai = partyMember.GameObject.GetComponent<CharacterBehaviour>();
-
             partyMember.bFollowing = bFollow;
 
             if (bFollow)
-                ai.StartFollowing(playerCharacter.transform);
+                partyMember.Ai.StartFollowing(playerCharacter.transform);
             else
-                ai.StopFollowing();
+                partyMember.Ai.StopFollowing();
         }
 
         private void SwitchPlayerControl(GameObject character)

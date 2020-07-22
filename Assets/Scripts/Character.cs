@@ -13,6 +13,7 @@ namespace Assets
         public TextAsset DialogueJson;
 
         private DialogueTree Dialogue;
+        public CharacterBehaviour Ai { get; set; }
 
         private Interactable Focus { get; set; }
         private Guid InteractionID { get; set; }
@@ -20,6 +21,7 @@ namespace Assets
 
         private void Start()
         {
+            Ai = GetComponent<CharacterBehaviour>();
             Dialogue = DialogueJson ? JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text) : new DialogueTree();
         }
 

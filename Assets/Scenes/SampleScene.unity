@@ -1135,6 +1135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 942374632}
+  FormationRadius: 3
   testPartyMembers:
   - {fileID: 570649404}
   - {fileID: 1654204022}

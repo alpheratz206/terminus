@@ -48,16 +48,13 @@ namespace Assets
 
         private Vector3 GetNextFormationPos(Vector3 position, Vector3 a, Vector3 b)
         {
-            Vector3 newPos;
             switch (++formationPos)
             {
-                case 0: newPos = position - a + b; break;
-                case 1: newPos = position - a - b; break;
-                case 2: newPos = position - 2*a; break;
-                default: newPos = new Vector3(50, 0, 50); break;
+                case 0: return position - a + b;
+                case 1: return position - a - b;
+                case 2: return position - 2 * a;
+                default: return new Vector3(50, 0, 50);
             }
-
-            return newPos;
         }
     }
 
@@ -65,10 +62,11 @@ namespace Assets
     {
         public CharacterBehaviour Ai { get; set; }
 
-        public PartyMember(GameObject GameObject, bool bFollowing = true)
+        public PartyMember(GameObject GameObject, Vector3 formationPos = new Vector3(), bool bFollowing = false)
         {
             this.GameObject = GameObject;
             this.bFollowing = bFollowing;
+            this.FormationPos = formationPos;
 
             Ai = GameObject.GetComponent<CharacterBehaviour>();
         }
@@ -77,9 +75,22 @@ namespace Assets
         public bool bFollowing { get; set; }
         public Vector3 FormationPos { get; set; }
 
-        //public void StartFollowingPlayer()
-        //{
-        //    Ai.StartFollowing(FormationPos);
-        //}
+        private Action formationIdle;
+
+        public void StartFollowing(Transform leader)
+        {
+
+
+            formationIdle = () => Ai.MoveTo(FormationPos);
+
+            Ai.onFollowingIdle.Add(formationIdle);
+            Ai.StartFollowing(leader);
+        }
+
+        public void StopFollowing()
+        {
+            Ai.StopFollowing();
+            Ai.onFollowingIdle.Clear();
+        }
     }
 }

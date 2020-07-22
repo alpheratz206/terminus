@@ -23,22 +23,16 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     private Character character;
-    private CharacterBehaviour ai;
-
-    private Camera mainCamera;
     public LayerMask moveablePlaces;
 
     void Start()
     {
         character = GetComponent<Character>();
-        ai = GetComponent<CharacterBehaviour>();
-
-        mainCamera = Camera.main;
     }
 
     void Update()
     {
-        if (!ai.isResponsive)
+        if (!character.Ai.isResponsive)
             return;
 
         if (Input.GetMouseButtonDown(0))
@@ -48,15 +42,15 @@ public class PlayerController : MonoBehaviour
             HandleRightClick();
 
         if (Input.GetKeyDown(KeyCode.T))
-            ai.BeginTeleport();
+            character.Ai.BeginTeleport();
     }
 
     private void HandleLeftClick()
         => InputHelper.MouseClick(hit =>
             {
                 character.RemoveFocus();
-                ai.MoveTo(hit.point);
-                ai.StopInteracting();
+                character.Ai.MoveTo(hit.point);
+                character.Ai.StopInteracting();
             }, 
             mask: moveablePlaces
         );
@@ -67,7 +61,7 @@ public class PlayerController : MonoBehaviour
                 if(hit.collider.TryGetComponent(out Interactable focus))
                 {
                     character.SetFocus(focus);
-                    ai.Interact(focus);
+                    character.Ai.Interact(focus);
                 }
             }
         );

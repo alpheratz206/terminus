@@ -25,6 +25,9 @@ namespace Assets
 
         #endregion
 
+        public IList<Action> onFollowingIdle
+            = new List<Action>();
+
         NavMeshAgent agent;
         public bool isResponsive = true;
 
@@ -36,6 +39,7 @@ namespace Assets
 
         public void BeginTeleport()
         {
+            agent.SetDestination(transform.position);
             isResponsive = false;
             StartCoroutine(
                 InputHelper.WaitForMouseClick(pos => 
