@@ -63,6 +63,7 @@ namespace Assets
             {
                 Party.Add(x);
             }
+            Party.SetFormation(playerPartyMember, FormationRadius);
         }
 
         private void Update()
@@ -121,9 +122,9 @@ namespace Assets
             partyMember.bFollowing = bFollow;
 
             if (bFollow)
-                partyMember.Ai.StartFollowing(playerCharacter.transform);
+                partyMember.StartFollowing(playerCharacter.transform);
             else
-                partyMember.Ai.StopFollowing();
+                partyMember.StopFollowing();
         }
 
         private void SwitchPlayerControl(GameObject character)

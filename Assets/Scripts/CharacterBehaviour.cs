@@ -34,8 +34,8 @@ namespace Assets
         private void Start()
             => agent = GetComponent<NavMeshAgent>();
 
-        public void MoveTo(Vector3 point)
-            => agent.SetDestination(point);
+        public void MoveTo(Vector3 point) =>
+            agent.SetDestination(point);
 
         public void BeginTeleport()
         {
@@ -151,14 +151,22 @@ namespace Assets
             while (agent.pathPending)
                 yield return null;
 
+            bool idling = false;
+
             while (true)
             {
-                if (agent.isPathComplete(leader.position))
+                if (agent.isPathComplete(leader.position) || (idling && !Input.GetMouseButtonDown(0)))
                 {
-                    //formation / idle
+                    //idling = true;
+                    //Debug.Log("A");
+                    //agent.stoppingDistance = 0f;
+                    //onFollowingIdle.InvokeAll();
                 }
                 else
                 {
+                    idling = false;
+                    Debug.Log("B");
+                    agent.stoppingDistance = followingDistance;
                     agent.SetDestination(leader.position);
                 }
 

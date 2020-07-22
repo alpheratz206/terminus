@@ -46,6 +46,28 @@ namespace Assets
             formationPos = -1;
         }
 
+        public void SetFormation(PartyMember focus, float radius)
+        {
+            if (!this.Contains(focus))
+                return;
+
+            var playerDirection = focus.GameObject.transform.forward;
+            var orthPlayerDirection = Vector3.Cross(playerDirection, Vector3.up).normalized;
+
+            var alpha = radius * playerDirection;
+            var beta = radius * orthPlayerDirection;
+
+            foreach(var partyMember in this)
+            {
+                if (partyMember == focus)
+                    continue;
+
+                partyMember.FormationPos = GetNextFormationPos(focus.GameObject.transform.position, alpha, beta);
+            }
+
+            formationPos = -1;
+        }
+
         private Vector3 GetNextFormationPos(Vector3 position, Vector3 a, Vector3 b)
         {
             switch (++formationPos)
@@ -75,15 +97,9 @@ namespace Assets
         public bool bFollowing { get; set; }
         public Vector3 FormationPos { get; set; }
 
-        private Action formationIdle;
-
         public void StartFollowing(Transform leader)
         {
-
-
-            formationIdle = () => Ai.MoveTo(FormationPos);
-
-            Ai.onFollowingIdle.Add(formationIdle);
+            Ai.onFollowingIdle.Add(() => Ai.MoveTo(FormationPos));
             Ai.StartFollowing(leader);
         }
 
