@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 namespace Assets
 {
@@ -15,6 +16,8 @@ namespace Assets
     public class CharacterBehaviour : MonoBehaviour
     {
         #region Editor Variables
+
+        public Sprite destinationSprite;
 
         public float followingDistance = 4f;
         public float lookRotationSpeed = 5f;
@@ -26,8 +29,7 @@ namespace Assets
 
         #endregion
 
-
-        LineRenderer line;
+        private GameObject destinationMarker;
 
         NavMeshAgent agent;
         public bool isResponsive = true;
@@ -35,28 +37,34 @@ namespace Assets
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
-            line = GetComponent<LineRenderer>();
         }
 
-        public void MoveTo(Vector3 point, bool DisplayPath = false)
+        public void MoveTo(Vector3 point, bool DisplayPath = true)
         {
+
+            if (DisplayPath)
+                StartCoroutine(DrawSprite(point));
+
             agent.SetDestination(point);
-
-            line.SetPosition(0, transform.position);
-
-            StartCoroutine(DrawPath());
         }
 
-        public IEnumerator DrawPath()
+        private IEnumerator DrawSprite(Vector3 dest)
         {
-            if (agent.pathPending)
+            Destroy(destinationMarker);
+
+            destinationMarker = new GameObject();
+            destinationMarker.transform.position = dest + new Vector3(0, 0.1f, 0);
+            var spriteRenderer = destinationMarker.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = destinationSprite;
+            destinationMarker.transform.Rotate(90, 0, 0);
+
+            while (agent.pathPending)
                 yield return null;
 
-            if (agent.path.corners.Length >= 2)
-            {
-                line.positionCount = agent.path.corners.Length;
-                line.SetPositions(agent.path.corners);
-            }
+            while (!agent.isPathComplete(stoppingDistance: .1f))
+                yield return null;
+
+            Destroy(destinationMarker);
         }
 
         public void BeginTeleport()
