@@ -8,7 +8,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.Scripts
+namespace Helpers
 {
     public static class InputHelper
     {
@@ -27,6 +27,7 @@ namespace Assets.Scripts
             if (raycastSuccess)
                 onHit(hit);
         }
+
         public static void MouseClick(Action<RaycastHit> onHit, Vector3 mousePos)
         {
             if (EventSystem.current.IsPointerOverGameObject())

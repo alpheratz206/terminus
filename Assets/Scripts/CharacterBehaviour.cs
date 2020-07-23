@@ -1,4 +1,4 @@
-﻿using Assets.Scripts;
+﻿using Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,10 +9,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-namespace Assets
+namespace Scripts
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    //[RequireComponent(typeof(LineRenderer))]
     public class CharacterBehaviour : MonoBehaviour
     {
         #region Editor Variables
@@ -29,7 +28,17 @@ namespace Assets
 
         #endregion
 
-        private GameObject destinationMarker;
+        [NonSerialized]
+        public GameObject destinationMarker;
+        private void InitMarker()
+        {
+            destinationMarker = new GameObject();
+            destinationMarker.SetActive(false);
+            var spriteRenderer = destinationMarker.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = destinationSprite;
+            destinationMarker.transform.Rotate(90, 0, 0);
+
+        }
 
         NavMeshAgent agent;
         public bool isResponsive = true;
@@ -37,26 +46,31 @@ namespace Assets
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
+            InitMarker();
         }
+
+        public bool IsStopped
+            => agent.isStopped;
+
+        public bool HasPath
+            => agent.hasPath;
 
         public void MoveTo(Vector3 point, bool DisplayPath = true)
         {
+            agent.SetDestination(point);
 
             if (DisplayPath)
                 StartCoroutine(DrawSprite(point));
-
-            agent.SetDestination(point);
         }
 
         private IEnumerator DrawSprite(Vector3 dest)
         {
-            Destroy(destinationMarker);
+            var ray = new Ray(dest + new Vector3(0, 100, 0), Vector3.down);
+            Physics.Raycast(ray, out var hit);
 
-            destinationMarker = new GameObject();
-            destinationMarker.transform.position = dest + new Vector3(0, 0.1f, 0);
-            var spriteRenderer = destinationMarker.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = destinationSprite;
-            destinationMarker.transform.Rotate(90, 0, 0);
+            destinationMarker.transform.position = hit.point + new Vector3(0, .1f, 0);
+
+            destinationMarker.SetActive(true);
 
             while (agent.pathPending)
                 yield return null;
@@ -64,7 +78,8 @@ namespace Assets
             while (!agent.isPathComplete(stoppingDistance: .1f))
                 yield return null;
 
-            Destroy(destinationMarker);
+
+            destinationMarker.SetActive(false);
         }
 
         public void BeginTeleport()
@@ -73,7 +88,7 @@ namespace Assets
             isResponsive = false;
             StartCoroutine(
                 InputHelper.WaitForMouseClick(pos => 
-                    { agent.Warp(pos); isResponsive = true; },
+                    { StartCoroutine(DrawSprite(pos)); agent.Warp(pos); isResponsive = true; },
                     0,
                     1.5f
                 )
@@ -169,7 +184,7 @@ namespace Assets
             while (agent.pathPending)
                 yield return null;
 
-            while (true)
+            while (focus)
             {
                 agent.SetDestination(focus.position);
                 Face(focus);

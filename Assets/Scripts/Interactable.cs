@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets
+namespace Scripts
 {
     public class Interactable : MonoBehaviour
     {
@@ -21,6 +21,9 @@ namespace Assets
 
         public void OnDrawGizmosSelected()
         {
+            if (interactionTransform == null)
+                interactionTransform = transform;
+
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(interactionTransform.position, interactionRadius);
         }

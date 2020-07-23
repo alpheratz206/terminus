@@ -1,4 +1,4 @@
-﻿using Assets.Scripts;
+﻿using Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets
+namespace Scripts.Controllers
 {
     public class PartyController : MonoBehaviour
     {
@@ -54,8 +54,8 @@ namespace Assets
             OnPlayerChange.Add((prevChar, newChar) => prevChar.GetComponent<Character>().StopInteracting());
             OnPlayerChange.Add((prevChar, newChar) =>
             {
-                prevChar.GetComponentInChildren<SpriteRenderer>().enabled = false;
-                newChar.GetComponentInChildren<SpriteRenderer>().enabled = true;
+                prevChar.GetComponent<Character>().EnableUI(false);
+                newChar.GetComponent<Character>().EnableUI(true);
             });
 
             Party.Add(playerCharacter);

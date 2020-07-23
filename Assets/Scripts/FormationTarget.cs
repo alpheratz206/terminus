@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Assets.Scripts
+namespace Scripts
 {
     public class FormationTarget : MonoBehaviour
     {

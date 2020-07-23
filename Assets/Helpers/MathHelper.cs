@@ -9,7 +9,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.Scripts
+namespace Helpers
 {
     public static class MathHelper
     {

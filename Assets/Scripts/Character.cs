@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
+using Models;
+using Scripts.Controllers;
 
-namespace Assets
+namespace Scripts
 {
     public class Character : Interactable
     {
@@ -54,6 +56,14 @@ namespace Assets
                 Focus = null;
                 InteractionID = Guid.Empty;
             }
+        }
+
+        public void EnableUI(bool b = true)
+        {
+            if(Ai.HasPath)
+                Ai.destinationMarker.SetActive(b);
+
+            gameObject.GetComponentInChildren<SpriteRenderer>().enabled = b;
         }
     }
 }

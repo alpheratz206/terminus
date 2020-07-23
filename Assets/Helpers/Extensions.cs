@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Assets
+namespace Helpers
 {
     public static class Extensions
     {
