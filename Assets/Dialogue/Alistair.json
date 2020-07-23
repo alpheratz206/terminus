@@ -12,6 +12,25 @@
           "Text": "...well, of wherever this is.",
           "Length": 2
         }
+      ],
+      "Siblings": [
+        {
+          "Prompt": "You don't know where you are?",
+          "Lines": [
+            {
+              "Text": "You do?",
+              "Length": 1
+            },
+            {
+              "Text": "Sometimes there are facts in life that one cannot but accept, or go mad.",
+              "Length": 2.5
+            },
+            {
+              "Text": "This is one of them.",
+              "Length": 1
+            }
+          ]
+        }
       ]
     },
     {
@@ -26,7 +45,7 @@
           "Length": 4
         }
       ],
-      "Dialogue": [
+      "Children": [
         {
           "Prompt": "When, exactly, is the hour of liberty?",
           "Lines": [
@@ -39,7 +58,7 @@
               "Length": 4
             }
           ],
-          "Dialogue": [
+          "Children": [
             {
               "Prompt": "Yes, but *when* will that happen?",
               "Lines": [

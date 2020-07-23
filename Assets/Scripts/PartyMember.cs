@@ -80,7 +80,6 @@ namespace Assets
         public void StopFollowing()
         {
             Ai.StopFollowing();
-            Ai.onFollowingIdle.Clear();
         }
     }
 }

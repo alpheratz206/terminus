@@ -44,6 +44,8 @@ public class DialogueController : MonoBehaviour
 
     #region Logic
 
+    private DialogueTree conversation;
+
     private List<DialogueNode> currentOptions
         = new List<DialogueNode>();
 
@@ -55,17 +57,19 @@ public class DialogueController : MonoBehaviour
         optionsList = dialogueUI.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
     }
 
-    public void BeginDialogue(DialogueTree dialogue)
+    public void BeginDialogue(DialogueTree conversation)
     {
-        header.GetComponentInChildren<TextMeshProUGUI>().text = dialogue.Name;
+        this.conversation = conversation;
 
-        if(dialogue?.Dialogue == null)
+        header.GetComponentInChildren<TextMeshProUGUI>().text = conversation.Name;
+
+        if(conversation?.Dialogue == null)
         {
-            Debug.Log(dialogue.NoDialogueGreeting);
+            Debug.Log(conversation.NoDialogueGreeting);
             return;
         }
 
-        currentOptions.AddRange(dialogue.Dialogue);
+        currentOptions.AddRange(conversation.Dialogue);
 
         RefreshUI();
 
@@ -136,10 +140,15 @@ public class DialogueController : MonoBehaviour
     {
         node.ExecuteAction();
 
-        if(node.Dialogue != null)
+        if(node.Siblings != null)
+        {
+            currentOptions.AddRange(node.Siblings);
+        }
+
+        if (node.Children != null)
         {
             currentOptions = currentOptions.Where(x => x.Persist).ToList();
-            currentOptions.AddRange(node.Dialogue);
+            currentOptions.AddRange(node.Children);
         }
 
         RefreshUI();

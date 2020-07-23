@@ -1913,7 +1913,7 @@ MonoBehaviour:
   maxZoom: 10
   zoomSpeed: 2
   yaw: 0
-  yawSpeed: 100
+  yawSpeed: 180
   lerpSpeed: 30
 --- !u!1 &984430078
 GameObject:

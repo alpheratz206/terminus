@@ -13,7 +13,8 @@ namespace Assets
     {
         public string Prompt { get; set; }
         public IList<DialogueLine> Lines { get; set; }
-        public IList<DialogueNode> Dialogue { get; set; }
+        public IList<DialogueNode> Children { get; set; }
+        public IList<DialogueNode> Siblings { get; set; }
         public bool Persist { get; set; }
         public string Action { get; set; }
 
@@ -28,7 +29,8 @@ namespace Assets
         public static Dictionary<DialogueActionType, Action> DialogueActionDictionary
             = new Dictionary<DialogueActionType, Action>() 
             { 
-                { DialogueActionType.EndDialogue, () => DialogueController.Instance.EndDialogue() } 
+                { DialogueActionType.EndDialogue, () => DialogueController.Instance.EndDialogue() },
+                //{ DialogueActionType.Return, () => DialogueController.Instance.
             };
 
     }

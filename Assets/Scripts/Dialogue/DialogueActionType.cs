@@ -9,6 +9,7 @@ namespace Assets.Scripts
 
     public enum DialogueActionType
     {
-        EndDialogue
+        EndDialogue,
+        Return
     }
 }

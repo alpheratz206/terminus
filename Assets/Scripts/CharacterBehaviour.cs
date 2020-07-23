@@ -11,6 +11,7 @@ using UnityEngine.AI;
 namespace Assets
 {
     [RequireComponent(typeof(NavMeshAgent))]
+    //[RequireComponent(typeof(LineRenderer))]
     public class CharacterBehaviour : MonoBehaviour
     {
         #region Editor Variables
@@ -25,14 +26,38 @@ namespace Assets
 
         #endregion
 
+
+        LineRenderer line;
+
         NavMeshAgent agent;
         public bool isResponsive = true;
 
         private void Start()
-            => agent = GetComponent<NavMeshAgent>();
+        {
+            agent = GetComponent<NavMeshAgent>();
+            line = GetComponent<LineRenderer>();
+        }
 
-        public void MoveTo(Vector3 point) =>
+        public void MoveTo(Vector3 point, bool DisplayPath = false)
+        {
             agent.SetDestination(point);
+
+            line.SetPosition(0, transform.position);
+
+            StartCoroutine(DrawPath());
+        }
+
+        public IEnumerator DrawPath()
+        {
+            if (agent.pathPending)
+                yield return null;
+
+            if (agent.path.corners.Length >= 2)
+            {
+                line.positionCount = agent.path.corners.Length;
+                line.SetPositions(agent.path.corners);
+            }
+        }
 
         public void BeginTeleport()
         {
