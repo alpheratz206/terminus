@@ -40,11 +40,11 @@ namespace Scripts
             }
         }
 
-        public Guid BeginInteract(Transform interestedParty)
+        public virtual Guid BeginInteract(Transform interestedParty, Action onInteract = null)
         {
             var interactionId = Guid.NewGuid();
 
-            var whenInRange = CheckForInteraction(interestedParty, interactionId);
+            var whenInRange = CheckForInteraction(interestedParty, interactionId, onInteract);
 
             interestedParties.Add(interactionId, whenInRange);
             StartCoroutine(whenInRange);
@@ -64,12 +64,14 @@ namespace Scripts
         private IDictionary<Guid, IEnumerator> interestedParties
             = new Dictionary<Guid, IEnumerator>();
 
-        private IEnumerator CheckForInteraction(Transform interestedParty, Guid id)
+        private IEnumerator CheckForInteraction(Transform interestedParty, Guid id, Action onInteract = null)
         {
             while(Vector3.Distance(interestedParty.position, interactionTransform.position) > interactionRadius)
                 yield return null;
 
             Interact();
+
+            onInteract?.Invoke();
 
             interestedParties.Remove(id);
         }

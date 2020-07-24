@@ -10,12 +10,15 @@ using Scripts.Controllers;
 
 namespace Scripts
 {
+    [RequireComponent(typeof(CharacterBehaviour))]
+    [RequireComponent(typeof(Inventory))]
     public class Character : Interactable
     {
         public TextAsset DialogueJson;
 
         private DialogueTree Dialogue;
         public CharacterBehaviour Ai { get; set; }
+        public Inventory Inventory { get; set; }
 
         private Interactable Focus { get; set; }
         private Guid InteractionID { get; set; }
@@ -24,6 +27,7 @@ namespace Scripts
         private void Start()
         {
             Ai = GetComponent<CharacterBehaviour>();
+            Inventory = GetComponent<Inventory>();
             Dialogue = DialogueJson ? JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text) : new DialogueTree();
         }
 
