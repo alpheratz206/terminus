@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -71,10 +72,23 @@ namespace Scripts.Controllers
         private void HandleRightClick()
             => InputHelper.MouseClick(hit =>
                 {
-                    if (hit.collider.TryGetComponent(out Interactable focus))
+                    var possibleInteracts = hit.collider.GetComponents<Interactable>().Where(x => x.IsAccessible);
+
+                    if (possibleInteracts.Count() == 1)
                     {
+                        var focus = possibleInteracts.First();
+
                         character.SetFocus(focus);
                         character.Ai.Interact(focus);
+                    }
+
+                    if(possibleInteracts.Count() > 1)
+                    {
+                        Debug.Log($"Opening context menu on {hit.collider.name}");
+                        foreach(var interact in possibleInteracts)
+                        {
+                            Debug.Log(interact.ActionName);
+                        }
                     }
                 }
             );

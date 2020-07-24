@@ -14,6 +14,9 @@ namespace Scripts
     [RequireComponent(typeof(Inventory))]
     public class Character : Interactable
     {
+        override public string ActionName => $"Talk to {name}";
+        //override public bool IsAccessible => isHostile
+
         public TextAsset DialogueJson;
 
         private DialogueTree Dialogue;
@@ -64,7 +67,7 @@ namespace Scripts
 
         public void EnableUI(bool b = true)
         {
-            if(Ai.HasPath)
+            if(Ai.HasPath || !b)
                 Ai.destinationMarker.SetActive(b);
 
             gameObject.GetComponentInChildren<SpriteRenderer>().enabled = b;

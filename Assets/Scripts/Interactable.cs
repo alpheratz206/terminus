@@ -30,6 +30,8 @@ namespace Scripts
 
         #endregion
 
+        public virtual string ActionName => "Interact";
+        public virtual bool IsAccessible => true;
         public virtual void Interact() { }
         public virtual void StopInteracting(Guid? id = null)
         {

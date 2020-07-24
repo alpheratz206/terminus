@@ -11,6 +11,8 @@ namespace Scripts
 {
     public class Pickup : Interactable
     {
+        override public string ActionName => $"Pick up {name}";
+
         public TextAsset itemJson;
         public Item item;
 
@@ -21,9 +23,8 @@ namespace Scripts
 
         public override Guid BeginInteract(Transform interestedParty, Action onInteract = null)
         {
-            interestedParty.TryGetComponent(out Inventory inventory);
-
-            onInteract += () => inventory.Add(item);
+            if(interestedParty.TryGetComponent(out Inventory inventory))
+                onInteract += () => inventory.Add(item);
 
             return base.BeginInteract(interestedParty, onInteract);
         }
@@ -31,8 +32,6 @@ namespace Scripts
         public override void Interact()
         {
             Debug.Log($"Adding {item.Name} to inventory");
-
-            //add to inventory
 
             Destroy(gameObject);
         }
