@@ -14,13 +14,22 @@ namespace Scripts
         public bool bAllFollowing = false;
 
         public void Add(GameObject newMember)
-           => this.Add(new PartyMember(newMember));
+        {
+            if (!this.Contains(newMember))
+                this.Add(new PartyMember(newMember));
+        }
+
+        public PartyMember Get(GameObject gameObject)
+            => this.Where(x => x.gameObject == gameObject).FirstOrDefault();
+
+        public void Remove(GameObject newMember)
+           => this.Remove(this.Where(x => x.gameObject == newMember).FirstOrDefault());
 
         public void AddRange(IEnumerable<GameObject> newMembers)
             => this.AddRange(newMembers);
 
         public bool Contains(GameObject predMember)
-            => this.Any(x => x.GameObject == predMember);
+            => this.Any(x => x.gameObject == predMember);
 
         //public void SetFormation(PartyMember focus, float radius)
         //{
@@ -62,13 +71,13 @@ namespace Scripts
 
         public PartyMember(GameObject GameObject, Vector3 formationPos = new Vector3(), bool bFollowing = false)
         {
-            this.GameObject = GameObject;
+            this.gameObject = GameObject;
             this.bFollowing = bFollowing;
 
             Ai = GameObject.GetComponent<CharacterBehaviour>();
         }
 
-        public GameObject GameObject { get; set; }
+        public GameObject gameObject { get; set; }
         public bool bFollowing { get; set; }
 
         public void StartFollowing(Transform leader)

@@ -19,7 +19,7 @@ namespace Scripts
 
         public TextAsset DialogueJson;
 
-        private DialogueTree Dialogue;
+        private DialogueTree DialogueTree;
         public CharacterBehaviour Ai { get; set; }
         public Inventory Inventory { get; set; }
 
@@ -31,14 +31,15 @@ namespace Scripts
         {
             Ai = GetComponent<CharacterBehaviour>();
             Inventory = GetComponent<Inventory>();
-            Dialogue = DialogueJson ? JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text) : new DialogueTree();
+            DialogueTree = DialogueJson ? JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text) : new DialogueTree();
+            DialogueTree.Owner = gameObject;
         }
 
-        public override void Interact()
+        public override void OnInteract()
         {
-            base.Interact();
+            base.OnInteract();
 
-            DialogueController.Instance.BeginDialogue(Dialogue);
+            DialogueController.Instance.BeginDialogue(DialogueTree);
         }
 
         public override void StopInteracting(Guid? interactionId = null)

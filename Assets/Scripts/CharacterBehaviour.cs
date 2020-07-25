@@ -55,14 +55,24 @@ namespace Scripts
         public bool HasPath
             => agent.hasPath;
 
-        public void MoveTo(Vector3 point, bool DisplayPath = true)
+        public void MoveTo(Vector3 point, bool DisplayPath = false)
         {
             agent.SetDestination(point);
 
+            if(DrawingSprite != null)
+                StopCoroutine(DrawingSprite);
+
+            destinationMarker.SetActive(false);
+
             if (DisplayPath)
-                StartCoroutine(DrawSprite(point));
+            {
+                DrawingSprite = DrawSprite(point);
+                StartCoroutine(DrawingSprite);
+            }
         }
 
+
+        private IEnumerator DrawingSprite; 
         private IEnumerator DrawSprite(Vector3 dest)
         {
             var ray = new Ray(dest + new Vector3(0, 100, 0), Vector3.down);
@@ -84,7 +94,7 @@ namespace Scripts
 
         public void BeginTeleport()
         {
-            agent.SetDestination(transform.position);
+            MoveTo(transform.position);
             isResponsive = false;
             StartCoroutine(
                 InputHelper.WaitForMouseClick(pos => 
@@ -121,7 +131,7 @@ namespace Scripts
 
             agent.stoppingDistance = focus.stoppingDistance;
             agent.updateRotation = false;
-            agent.SetDestination(focus.interactionTransform.position);
+            MoveTo(focus.interactionTransform.position);
 
             Interacting = Interact(focus.interactionTransform);
             StartCoroutine(Interacting);
@@ -153,7 +163,7 @@ namespace Scripts
             if(offset == null)
                 agent.stoppingDistance = followingDistance;
 
-            agent.SetDestination(leader.position);
+            MoveTo(leader.position);
 
             Following = Follow(leader, offset ?? Vector3.zero);
             StartCoroutine(Following);
@@ -186,7 +196,7 @@ namespace Scripts
 
             while (focus)
             {
-                agent.SetDestination(focus.position);
+                MoveTo(focus.position);
                 Face(focus);
                 yield return null;
             }
@@ -209,7 +219,7 @@ namespace Scripts
                 else
                 {
                     idling = false;
-                    agent.SetDestination(leader.position + offset);
+                    MoveTo(leader.position + offset);
                 }
 
                 yield return null;

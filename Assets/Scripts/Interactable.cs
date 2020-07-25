@@ -32,7 +32,7 @@ namespace Scripts
 
         public virtual string ActionName => "Interact";
         public virtual bool IsAccessible => true;
-        public virtual void Interact() { }
+        public virtual void OnInteract() { }
         public virtual void StopInteracting(Guid? id = null)
         {
             if (id.HasValue && interestedParties.TryGetValue(id.Value, out IEnumerator ongoing))
@@ -71,7 +71,7 @@ namespace Scripts
             while(Vector3.Distance(interestedParty.position, interactionTransform.position) > interactionRadius)
                 yield return null;
 
-            Interact();
+            OnInteract();
 
             onInteract?.Invoke();
 

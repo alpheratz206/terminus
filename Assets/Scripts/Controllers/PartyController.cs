@@ -32,14 +32,14 @@ namespace Scripts.Controllers
 
         private PartyMember playerPartyMember
         {
-            get => Party.FirstOrDefault(x => x.GameObject == playerCharacter);
-            set => playerCharacter = value.GameObject;
+            get => Party.FirstOrDefault(x => x.gameObject == playerCharacter);
+            set => playerCharacter = value.gameObject;
         }
 
         public List<GameObject> testPartyMembers
             = new List<GameObject>();
 
-        public Party Party
+        private Party Party
             = new Party();
 
         public IList<Action<GameObject, GameObject>> OnPlayerChange
@@ -87,6 +87,22 @@ namespace Scripts.Controllers
 
         }
 
+        public void Add(GameObject newMember)
+        {
+            Party.Add(newMember);
+            if (Party.bAllFollowing)
+                SetFollowPlayer(Party.Get(newMember), true);
+        }
+
+        public void Remove(GameObject member)
+        {
+            Party.Get(member).StopFollowing();
+            Party.Remove(member);
+        }
+
+        public bool IsInParty(GameObject gameObject)
+            => Party.Contains(gameObject);
+
         private void HandleLeftClick()
             => InputHelper.MouseClick(hit =>
             {
@@ -106,7 +122,7 @@ namespace Scripts.Controllers
         {
             foreach (var partyMember in Party)
             {
-                if (partyMember.GameObject == playerCharacter)
+                if (partyMember.gameObject == playerCharacter)
                     continue;
 
                 SetFollowPlayer(partyMember, bFollow);
@@ -126,7 +142,7 @@ namespace Scripts.Controllers
         private void SwitchPlayerControl(GameObject character)
             => SwitchPlayerControl(
                     Party.FindIndex(
-                            x => x.GameObject == character
+                            x => x.gameObject == character
                         ) + 1
                 );
 

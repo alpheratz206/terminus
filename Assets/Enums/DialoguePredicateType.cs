@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Enums
 {
-
-    public enum DialogueActionType
+    public enum DialoguePredicateType
     {
-        EndDialogue,
-        Return,
-        JoinParty,
-        LeaveParty
+        InParty,
+        NotInParty
     }
 }

@@ -63,7 +63,7 @@ namespace Scripts.Controllers
             => InputHelper.MouseClick(hit =>
                 {
                     character.RemoveFocus();
-                    character.Ai.MoveTo(hit.point);
+                    character.Ai.MoveTo(hit.point, true);
                     character.Ai.StopInteracting();
                 },
                 mask: moveablePlaces

@@ -71,7 +71,7 @@ namespace Scripts.Controllers
                 return;
             }
 
-            currentOptions.AddRange(conversation.Dialogue);
+            AddOptions(conversation.Dialogue);
 
             RefreshUI();
 
@@ -140,17 +140,15 @@ namespace Scripts.Controllers
 
         private void BranchDialogue(DialogueNode node)
         {
-            node.ExecuteAction();
+            node.ExecuteAction(conversation.Owner);
 
             if (node.Siblings != null)
-            {
-                currentOptions.AddRange(node.Siblings);
-            }
+                AddOptions(node.Siblings);
 
             if (node.Children != null)
             {
-                currentOptions = currentOptions.Where(x => x.Persist).ToList();
-                currentOptions.AddRange(node.Children);
+                currentOptions = currentOptions.Where(x => x.Persist && x.Display()).ToList();
+                AddOptions(node.Children);
             }
 
             RefreshUI();
@@ -161,5 +159,8 @@ namespace Scripts.Controllers
             foreach (Transform child in optionsList.transform)
                 Destroy(child.gameObject);
         }
+
+        private void AddOptions(IEnumerable<DialogueNode> options)
+            => currentOptions.AddRange(options.Where(x => x.Display(conversation.Owner)));
     }
 }

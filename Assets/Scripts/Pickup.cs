@@ -29,7 +29,7 @@ namespace Scripts
             return base.BeginInteract(interestedParty, onInteract);
         }
 
-        public override void Interact()
+        public override void OnInteract()
         {
             Debug.Log($"Adding {item.Name} to inventory");
 

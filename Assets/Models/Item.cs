@@ -8,9 +8,10 @@ using UnityEngine;
 
 namespace Models
 {
+    [Serializable]
     public class Item
     {
-        public string Name { get; set; }
+        public string Name;
         public string InventoryIconPath { private get; set; }
         [JsonIgnore]
         public Sprite InventoryIcon =>

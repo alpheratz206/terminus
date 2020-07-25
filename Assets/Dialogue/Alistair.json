@@ -94,6 +94,34 @@
       ]
     },
     {
+      "Prompt": "Join my party.",
+      "Lines": [
+        {
+          "Text": "Let us venture forth!",
+          "Length": 1
+        }
+      ],
+      "Predicate":  "NotInParty",
+      "Actions": [
+        "JoinParty",
+        "EndDialogue"
+      ]
+    },
+    {
+      "Prompt": "Leave my party.",
+      "Lines": [
+        {
+          "Text": "Fuck you!",
+          "Length": 1
+        }
+      ],
+      "Predicate": "InParty",
+      "Actions": [
+        "LeaveParty",
+        "EndDialogue"
+      ]
+    },
+    {
       "Prompt": "Goodbye.",
       "Lines": [
         {
