@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public class Interactable : MonoBehaviour
+    public abstract class Interactable : MonoBehaviour
     {
         #region Editor Variables
 
@@ -30,21 +30,20 @@ namespace Scripts
 
         #endregion
 
-        public virtual string ActionName => "Interact";
+        public abstract string ActionName { get; }
         public virtual bool IsAccessible => true;
-        public virtual void OnInteract() { }
-        public virtual void StopInteracting(Guid? id = null)
-        {
-            if (id.HasValue && interestedParties.TryGetValue(id.Value, out IEnumerator ongoing))
-            {
-                StopCoroutine(ongoing);
-                interestedParties.Remove(id.Value);
-            }
-        }
 
-        public virtual Guid BeginInteract(Transform interestedParty, Action onInteract = null)
+        private IDictionary<Guid, IEnumerator> interestedParties
+            = new Dictionary<Guid, IEnumerator>();
+
+        //the interaction logic
+        protected abstract void OnInteract(Transform interestedParty);
+
+        public Guid BeginInteract(Transform interestedParty, Action additionalInteract = null)
         {
             var interactionId = Guid.NewGuid();
+
+            Action onInteract = delegate { OnInteract(interestedParty); } + additionalInteract;
 
             var whenInRange = CheckForInteraction(interestedParty, interactionId, onInteract);
 
@@ -54,24 +53,25 @@ namespace Scripts
             return interactionId;
         }
 
-        public void CancelInteract(Guid id)
+        protected virtual void OnStopInteract() { }
+
+        public virtual void StopInteracting(Guid? id = null)
         {
-            if(interestedParties.TryGetValue(id, out IEnumerator ongoing))
+            if (id.HasValue && interestedParties.TryGetValue(id.Value, out IEnumerator ongoing))
             {
+                OnStopInteract();
                 StopCoroutine(ongoing);
-                interestedParties.Remove(id);
+                interestedParties.Remove(id.Value);
             }
         }
 
-        private IDictionary<Guid, IEnumerator> interestedParties
-            = new Dictionary<Guid, IEnumerator>();
-
-        private IEnumerator CheckForInteraction(Transform interestedParty, Guid id, Action onInteract = null)
+        private IEnumerator CheckForInteraction(
+            Transform interestedParty,
+            Guid id,
+            Action onInteract)
         {
             while(Vector3.Distance(interestedParty.position, interactionTransform.position) > interactionRadius)
                 yield return null;
-
-            OnInteract();
 
             onInteract?.Invoke();
 

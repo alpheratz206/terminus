@@ -7,6 +7,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Models;
 using Scripts.Controllers;
+using UnityEditor.SceneManagement;
 
 namespace Scripts
 {
@@ -14,18 +15,8 @@ namespace Scripts
     [RequireComponent(typeof(Inventory))]
     public class Character : Interactable
     {
-        override public string ActionName => $"Talk to {name}";
-        //override public bool IsAccessible => isHostile
-
-        public TextAsset DialogueJson;
-
-        private DialogueTree DialogueTree;
         public CharacterBehaviour Ai { get; set; }
         public Inventory Inventory { get; set; }
-
-        private Interactable Focus { get; set; }
-        private Guid InteractionID { get; set; }
-            = Guid.Empty;
 
         private void Start()
         {
@@ -35,19 +26,37 @@ namespace Scripts
             DialogueTree.Owner = gameObject;
         }
 
-        public override void OnInteract()
+        public void EnableUI(bool b = true)
         {
-            base.OnInteract();
+            if (Ai.HasPath || !b)
+                Ai.destinationMarker.SetActive(b);
 
-            DialogueController.Instance.BeginDialogue(DialogueTree);
+            gameObject.GetComponentInChildren<SpriteRenderer>().enabled = b;
         }
 
-        public override void StopInteracting(Guid? interactionId = null)
-        {
-            base.StopInteracting(interactionId);
+        #region Interactable
 
-            DialogueController.Instance.EndDialogue();
-        }
+        public TextAsset DialogueJson;
+
+        private DialogueTree DialogueTree;
+
+        public override string ActionName => $"Talk to {name}";
+
+        public override bool IsAccessible => true; //is hostile
+
+        protected override void OnInteract(Transform interestedParty)
+            => DialogueController.Instance.BeginDialogue(DialogueTree);
+
+        protected override void OnStopInteract()
+            => DialogueController.Instance.EndDialogue();
+
+        #endregion
+
+        #region Interaction
+
+        private Interactable Focus { get; set; }
+        private Guid InteractionID { get; set; }
+            = Guid.Empty;
 
         public void SetFocus(Interactable newFocus)
         {
@@ -66,12 +75,6 @@ namespace Scripts
             }
         }
 
-        public void EnableUI(bool b = true)
-        {
-            if(Ai.HasPath || !b)
-                Ai.destinationMarker.SetActive(b);
-
-            gameObject.GetComponentInChildren<SpriteRenderer>().enabled = b;
-        }
+        #endregion
     }
 }
