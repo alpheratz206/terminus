@@ -9,13 +9,13 @@ namespace Scripts.Interactables
 {
     public class Enemy : Interactable
     {
-        public override string ActionName => throw new NotImplementedException();
+        public override string ActionName => $"Attack {name}";
 
-        public override bool IsAccessible => throw new NotImplementedException();
+        public override bool IsAccessible => true;
 
         protected override void OnInteract(Transform interestedParty)
         {
-            throw new NotImplementedException();
+            Debug.Log($"{name} is being attacked by {interestedParty.name}!");
         }
     }
 }

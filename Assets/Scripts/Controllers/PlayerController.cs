@@ -26,27 +26,27 @@ namespace Scripts.Controllers
         }
         #endregion
 
-        private Actor character;
+        private Actor actor;
         public LayerMask moveablePlaces;
 
         void Start()
         {
-            character = GetComponent<Actor>();
+            actor = GetComponent<Actor>();
         }
 
         void Update()
         {
-            if (!character.Ai.isResponsive)
-                return;
+            //if (!actor.Ai.isResponsive)
+            //    return;
 
             if (Input.GetMouseButtonDown(0))
-                HandleLeftClick();
+                InputHelper.MouseClick(hit => HandleLeftClick(hit), mask: moveablePlaces);
 
             if (Input.GetMouseButtonDown(1))
-                HandleRightClick();
+                InputHelper.MouseClick(hit => HandleRightClick(hit));
 
-            if (Input.GetKeyDown(KeyCode.T))
-                character.Ai.BeginTeleport();
+            //if (Input.GetKeyDown(KeyCode.T))
+            //    actor.Ai.BeginTeleport();
 
             if (Input.GetKeyDown(KeyCode.Space))
                 ToggleGamePlayPause();
@@ -60,39 +60,25 @@ namespace Scripts.Controllers
                 Time.timeScale = 1;
         }
 
-        private void HandleLeftClick()
-            => InputHelper.MouseClick(hit =>
+        private void HandleLeftClick(RaycastHit hit)
+            => actor.MoveTo(hit.point);
+
+        private void HandleRightClick(RaycastHit hit)
+        {
+            var possibleInteracts = hit.collider.GetComponents<Interactable>().Where(x => x.IsAccessible);
+
+            if (possibleInteracts.Count() == 1)
+                actor.SetFocus(possibleInteracts.First());
+
+            if(possibleInteracts.Count() > 1)
+            {
+                Debug.Log($"Opening context menu on {hit.collider.name}");
+                foreach(var interact in possibleInteracts)
                 {
-                    character.RemoveFocus();
-                    character.Ai.MoveTo(hit.point, true);
-                    character.Ai.StopInteracting();
-                },
-                mask: moveablePlaces
-            );
-
-        private void HandleRightClick()
-            => InputHelper.MouseClick(hit =>
-                {
-                    var possibleInteracts = hit.collider.GetComponents<Interactable>().Where(x => x.IsAccessible);
-
-                    if (possibleInteracts.Count() == 1)
-                    {
-                        var focus = possibleInteracts.First();
-
-                        character.SetFocus(focus);
-                        character.Ai.Interact(focus);
-                    }
-
-                    if(possibleInteracts.Count() > 1)
-                    {
-                        Debug.Log($"Opening context menu on {hit.collider.name}");
-                        foreach(var interact in possibleInteracts)
-                        {
-                            Debug.Log(interact.ActionName);
-                        }
-                    }
+                    Debug.Log(interact.ActionName);
                 }
-            );
+            }
+        }
 
         public void Migrate(GameObject newPlayer)
         {

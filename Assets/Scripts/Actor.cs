@@ -15,16 +15,13 @@ namespace Scripts
     //Agent in the world who can interact with things using ActorBehaviour
 
     [RequireComponent(typeof(ActorBehaviour))]
-    [RequireComponent(typeof(Inventory))]
     public class Actor : MonoBehaviour
     {
-        public ActorBehaviour Ai { get; set; }
-        public Inventory Inventory { get; set; }
+        private ActorBehaviour Ai { get; set; }
 
         private void Start()
         {
             Ai = GetComponent<ActorBehaviour>();
-            Inventory = GetComponent<Inventory>();
         }
 
         public void EnableUI(bool b = true)
@@ -33,6 +30,13 @@ namespace Scripts
                 Ai.destinationMarker.SetActive(b);
 
             gameObject.GetComponentInChildren<SpriteRenderer>().enabled = b;
+        }
+
+        public void MoveTo(Vector3 position)
+        {
+            RemoveFocus();
+            Ai.StopInteracting();
+            Ai.MoveTo(position, true);
         }
 
         #region Interaction
@@ -46,6 +50,7 @@ namespace Scripts
             RemoveFocus();
             Focus = newFocus;
             InteractionID = newFocus.BeginInteract(transform);
+            Ai.Interact(newFocus);
         }
 
         public void RemoveFocus()

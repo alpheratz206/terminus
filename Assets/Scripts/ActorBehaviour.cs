@@ -42,7 +42,7 @@ namespace Scripts
         }
 
         NavMeshAgent agent;
-        public bool isResponsive = true;
+        public bool isResponsive => true;
 
         private void Start()
         {
@@ -93,18 +93,18 @@ namespace Scripts
             destinationMarker.SetActive(false);
         }
 
-        public void BeginTeleport()
-        {
-            MoveTo(transform.position);
-            isResponsive = false;
-            StartCoroutine(
-                InputHelper.WaitForMouseClick(pos => 
-                    { StartCoroutine(DrawSprite(pos)); agent.Warp(pos); isResponsive = true; },
-                    0,
-                    1.5f
-                )
-            );
-        }
+        //public void BeginTeleport()
+        //{
+        //    MoveTo(transform.position);
+        //    isResponsive = false;
+        //    StartCoroutine(
+        //        InputHelper.WaitForMouseClick(pos => 
+        //            { StartCoroutine(DrawSprite(pos)); agent.Warp(pos); isResponsive = true; },
+        //            0,
+        //            1.5f
+        //        )
+        //    );
+        //}
 
         private void Face(Transform focus)
         {
