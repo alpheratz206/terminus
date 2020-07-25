@@ -67,14 +67,14 @@ namespace Scripts
 
     public class PartyMember
     {
-        public CharacterBehaviour Ai { get; set; }
+        public ActorBehaviour Ai { get; set; }
 
         public PartyMember(GameObject GameObject, Vector3 formationPos = new Vector3(), bool bFollowing = false)
         {
             this.gameObject = GameObject;
             this.bFollowing = bFollowing;
 
-            Ai = GameObject.GetComponent<CharacterBehaviour>();
+            Ai = GameObject.GetComponent<ActorBehaviour>();
         }
 
         public GameObject gameObject { get; set; }

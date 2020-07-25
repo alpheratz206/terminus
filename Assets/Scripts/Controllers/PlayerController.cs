@@ -1,4 +1,5 @@
 ﻿using Helpers;
+using Scripts.Interactables;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ using UnityEngine.EventSystems;
 
 namespace Scripts.Controllers
 {
-    [RequireComponent(typeof(Character))]
-    [RequireComponent(typeof(CharacterBehaviour))]
+    [RequireComponent(typeof(Actor))]
+    [RequireComponent(typeof(ActorBehaviour))]
     public class PlayerController : MonoBehaviour
     {
         #region Singleton
@@ -25,12 +26,12 @@ namespace Scripts.Controllers
         }
         #endregion
 
-        private Character character;
+        private Actor character;
         public LayerMask moveablePlaces;
 
         void Start()
         {
-            character = GetComponent<Character>();
+            character = GetComponent<Actor>();
         }
 
         void Update()

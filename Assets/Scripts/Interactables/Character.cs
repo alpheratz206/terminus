@@ -1,40 +1,24 @@
-﻿using System;
+﻿using Models;
+using Newtonsoft.Json;
+using Scripts.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Newtonsoft.Json;
-using Models;
-using Scripts.Controllers;
-using UnityEditor.SceneManagement;
 
-namespace Scripts
+namespace Scripts.Interactables
 {
-    [RequireComponent(typeof(CharacterBehaviour))]
-    [RequireComponent(typeof(Inventory))]
+    //An object that can be interacted with for dialogue
+
     public class Character : Interactable
     {
-        public CharacterBehaviour Ai { get; set; }
-        public Inventory Inventory { get; set; }
-
         private void Start()
         {
-            Ai = GetComponent<CharacterBehaviour>();
-            Inventory = GetComponent<Inventory>();
             DialogueTree = DialogueJson ? JsonConvert.DeserializeObject<DialogueTree>(DialogueJson.text) : new DialogueTree();
             DialogueTree.Owner = gameObject;
         }
-
-        public void EnableUI(bool b = true)
-        {
-            if (Ai.HasPath || !b)
-                Ai.destinationMarker.SetActive(b);
-
-            gameObject.GetComponentInChildren<SpriteRenderer>().enabled = b;
-        }
-
-        #region Interactable
 
         public TextAsset DialogueJson;
 
@@ -49,32 +33,5 @@ namespace Scripts
 
         protected override void OnStopInteract()
             => DialogueController.Instance.EndDialogue();
-
-        #endregion
-
-        #region Interaction
-
-        private Interactable Focus { get; set; }
-        private Guid InteractionID { get; set; }
-            = Guid.Empty;
-
-        public void SetFocus(Interactable newFocus)
-        {
-            RemoveFocus();
-            Focus = newFocus;
-            InteractionID = newFocus.BeginInteract(transform);
-        }
-
-        public void RemoveFocus()
-        {
-            if (InteractionID != Guid.Empty)
-            {
-                Focus.StopInteracting(InteractionID);
-                Focus = null;
-                InteractionID = Guid.Empty;
-            }
-        }
-
-        #endregion
     }
 }

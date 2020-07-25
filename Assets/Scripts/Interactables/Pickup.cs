@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Interactables
 {
     public class Pickup : Interactable
     {

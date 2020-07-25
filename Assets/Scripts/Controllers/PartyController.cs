@@ -1,4 +1,5 @@
 ﻿using Helpers;
+using Scripts.Interactables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,12 +51,13 @@ namespace Scripts.Controllers
             var playerController = playerCharacter.AddComponent<PlayerController>();
             playerController.moveablePlaces = LayerMask.GetMask("Ground");
 
-            OnPlayerChange.Add((prevChar, newChar) => PlayerController.Instance.Migrate(newChar));
-            OnPlayerChange.Add((prevChar, newChar) => prevChar.GetComponent<Character>().StopInteracting());
             OnPlayerChange.Add((prevChar, newChar) =>
             {
-                prevChar.GetComponent<Character>().EnableUI(false);
-                newChar.GetComponent<Character>().EnableUI(true);
+                PlayerController.Instance.Migrate(newChar);
+                if(prevChar.TryGetComponent(out Interactable interact))
+                    interact.StopInteracting();
+                prevChar.GetComponent<Actor>().EnableUI(false);
+                newChar.GetComponent<Actor>().EnableUI(true);
             });
 
             Party.Add(playerCharacter);

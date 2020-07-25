@@ -1,4 +1,5 @@
 ﻿using Helpers;
+using Scripts.Interactables;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using UnityEngine.UIElements;
 namespace Scripts
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class CharacterBehaviour : MonoBehaviour
+    public class ActorBehaviour : MonoBehaviour
     {
         #region Editor Variables
 
