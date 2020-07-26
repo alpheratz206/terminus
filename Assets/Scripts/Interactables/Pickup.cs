@@ -13,6 +13,8 @@ namespace Scripts.Interactables
     {
         public override string ActionName => $"Pick up {name}";
 
+        public override bool IsAccessible => true;
+
         public TextAsset itemJson;
         public Item item;
 
@@ -30,5 +32,7 @@ namespace Scripts.Interactables
                 Destroy(gameObject);
             }
         }
+
+        protected override void OnStopInteract() { }
     }
 }

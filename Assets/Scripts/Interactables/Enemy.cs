@@ -31,7 +31,11 @@ namespace Scripts.Interactables
 
         protected override void OnStopInteract()
         {
-            StopCoroutine(Engaging);
+            if(Engaging != null)
+            {
+                StopCoroutine(Engaging);
+                Engaging = null;
+            }
         }
 
         private IEnumerator Engaging;

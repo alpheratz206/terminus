@@ -31,12 +31,11 @@ namespace Scripts.Interactables
         #endregion
 
         public abstract string ActionName { get; }
-        public virtual bool IsAccessible => true;
+        public abstract bool IsAccessible { get; }
 
         private IDictionary<Guid, IEnumerator> interestedParties
             = new Dictionary<Guid, IEnumerator>();
 
-        //the interaction logic
         protected abstract void OnInteract(Transform interestedParty);
 
         public Guid BeginInteract(Transform interestedParty, Action additionalInteract = null)
@@ -53,7 +52,7 @@ namespace Scripts.Interactables
             return interactionId;
         }
 
-        protected virtual void OnStopInteract() { }
+        protected abstract void OnStopInteract();
 
         public virtual void StopInteracting(Guid? id = null)
         {
