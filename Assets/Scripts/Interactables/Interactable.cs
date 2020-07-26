@@ -57,9 +57,9 @@ namespace Scripts.Interactables
 
         public virtual void StopInteracting(Guid? id = null)
         {
+            OnStopInteract();
             if (id.HasValue && interestedParties.TryGetValue(id.Value, out IEnumerator ongoing))
             {
-                OnStopInteract();
                 StopCoroutine(ongoing);
                 interestedParties.Remove(id.Value);
             }

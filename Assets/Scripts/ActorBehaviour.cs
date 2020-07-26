@@ -38,10 +38,9 @@ namespace Scripts
             var spriteRenderer = destinationMarker.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = destinationSprite;
             destinationMarker.transform.Rotate(90, 0, 0);
-
         }
 
-        NavMeshAgent agent;
+        private NavMeshAgent agent;
         public bool isResponsive => true;
 
         private void Start()
