@@ -59,5 +59,11 @@ namespace Helpers
             mousePos
             );
         }
+
+        private static bool IsInsideRect(this Vector3 pos, RectTransform transform)
+            => pos.x > transform.position.x
+            && pos.x < transform.position.x + (transform.lossyScale.x * transform.rect.width)
+            && (Screen.height - pos.y) > Math.Abs(Screen.height - transform.position.y)
+            && (Screen.height - pos.y) < Math.Abs(Screen.height - transform.position.y + (transform.lossyScale.y * transform.rect.height));
     }
 }
