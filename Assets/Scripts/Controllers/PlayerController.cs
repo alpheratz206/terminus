@@ -50,6 +50,15 @@ namespace Scripts.Controllers
 
             if (Input.GetKeyDown(KeyCode.Space))
                 ToggleGamePlayPause();
+
+            if (Input.GetKeyDown(KeyCode.I))
+                TryToggleInventory();
+        }
+
+        private void TryToggleInventory()
+        {
+            if (TryGetComponent(out InventoryRenderer renderer) && renderer.isInit)
+                renderer.ToggleActive();
         }
 
         private void ToggleGamePlayPause()

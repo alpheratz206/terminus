@@ -12,9 +12,7 @@ namespace Models
     public class Item
     {
         public string Name;
-        public string InventoryIconPath { private get; set; }
-        [JsonIgnore]
-        public Sprite InventoryIcon =>
-            Resources.Load<Sprite>(InventoryIconPath);
+        public string InventoryIconPath { get; set; }
+        public int InventoryStackSize { get; set; }
     }
 }

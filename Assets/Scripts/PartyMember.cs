@@ -11,7 +11,7 @@ namespace Scripts
 {
     public class Party : List<PartyMember>
     {
-        public bool bAllFollowing = false;
+        public bool bAllFollowing = true;
 
         public void Add(GameObject newMember)
         {
