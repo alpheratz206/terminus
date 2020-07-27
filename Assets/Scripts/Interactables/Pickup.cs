@@ -1,5 +1,6 @@
 ﻿using Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,12 @@ namespace Scripts.Interactables
 
         private void Start()
         {
-            item = itemJson ? JsonConvert.DeserializeObject<Item>(itemJson.text) : new Item();
+            var jObj = itemJson ? JsonConvert.DeserializeObject<JObject>(itemJson.text) : null;
+
+            if (jObj.ContainsKey("EffectType"))
+                item = jObj.ToObject<Consumable>();
+            else
+                item = jObj.ToObject<Item>();
         }
 
         protected override void OnInteract(Transform interestedParty)

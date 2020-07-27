@@ -10,7 +10,8 @@ namespace Scripts
     public class Stats : MonoBehaviour
     {
         public int maxHealth = 100;
-        private int Health { get; set; }
+        [SerializeField]
+        private int Health;
 
         private void Start()
         {
@@ -29,6 +30,18 @@ namespace Scripts
             Debug.Log($"{name} takes {damage} damage!");
             Health -= damage;
             return true;
+        }
+
+        public void Heal(int restored)
+        {
+            Health += restored;
+            if (Health > maxHealth)
+            {
+                Debug.Log($"{name} healed by {restored - Health + maxHealth}.");
+                Health = maxHealth;
+            }
+            else
+                Debug.Log($"{name} healed by {restored}.");
         }
 
         public virtual void OnDeath() { Debug.Log($"{name} died!"); }

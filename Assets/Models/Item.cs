@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace Models
         public string Name;
         public string InventoryIconPath { get; set; }
         public int InventoryStackSize { get; set; } = 1;
+
+        public virtual void OnInventoryUse(InventoryItem invDetails) { Debug.Log($"Using {Name}"); }
     }
 }

@@ -29,8 +29,7 @@ namespace Scripts
 
             if (existingStack != null)
             {
-                existingStack.Count++;
-                OnStackAmtChange?.Invoke(existingStack);
+                existingStack++;
             }
             else
             {
@@ -38,7 +37,8 @@ namespace Scripts
                 {
                     Item = item,
                     Slot = NextAvilableSlot,
-                    Count = 1
+                    Count = 1,
+                    OnStackAmtChange = this.OnStackAmtChange
                 };
                 items.Add(itemAdded);
                 OnItemAdded?.Invoke(itemAdded);
@@ -50,8 +50,6 @@ namespace Scripts
             => Enumerable.Range(1, maxSlots)
                          .Where(x => !items.Any(y => y.Slot == x))
                          .Min();
-
-        public Func<object, object> OnItemIncremented { get; internal set; }
 
         //public void AddRange(IEnumerable<Item> items)
         //    => this.items.AddRange(items);
@@ -65,10 +63,30 @@ namespace Scripts
 
     public class InventoryItem
     {
+        public InventoryItem()
+        {
+            OnUse = () => Item.OnInventoryUse(this);
+        }
+
         public Item Item { get; set; }
         public int Count { get; set; }
         public int Slot { get; set; }
         public Sprite Icon =>
             Resources.Load<Sprite>(Item.InventoryIconPath);
+        public Action OnUse { get; set; }
+        public Action<InventoryItem> OnStackAmtChange { get; set; }
+        public static InventoryItem operator ++(InventoryItem item)
+        {
+            item.Count++;
+            item.OnStackAmtChange?.Invoke(item);
+            return item;
+        }
+        public static InventoryItem operator --(InventoryItem item)
+        {
+            item.Count--;
+            item.OnStackAmtChange?.Invoke(item);
+            return item;
+        }
+
     }
 }

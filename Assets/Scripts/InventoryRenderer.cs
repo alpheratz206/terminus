@@ -1,4 +1,5 @@
 ﻿using Models;
+using Scripts.Interactables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,17 +60,21 @@ namespace Scripts
             var count = iconParent.GetChild(1);
 
             sprite.GetComponent<Image>().sprite = newItem.Icon;
-            count.GetComponent<TextMeshProUGUI>().text = "1";
+            sprite.GetComponent<Button>().onClick.AddListener(() => newItem.OnUse());
+            count.GetComponent<TextMeshProUGUI>().enabled = false;
         }
 
         private void OnStackAmtChange(InventoryItem newItem)
         {
             var slot = Body.GetChild(newItem.Slot - 1);
-            var iconParent = slot.GetChild(0);
 
-            var count = iconParent.GetChild(1);
+            var counter = slot.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
 
-            count.GetComponent<TextMeshProUGUI>().text = newItem.Count.ToString();
+            counter.text = newItem.Count.ToString();
+            if (newItem.Count > 1)
+                counter.enabled = true;
+            else
+                counter.enabled = false;
         }
 
         private void SetName(string name)
@@ -131,6 +136,7 @@ namespace Scripts
                     var scaleFactor = slotSize / rect.rect.width;
 
                     rect.transform.localScale = new Vector3(scaleFactor, scaleFactor);
+                    newSlot.AddComponent<TestInteraction>();
                 }
             }
         }

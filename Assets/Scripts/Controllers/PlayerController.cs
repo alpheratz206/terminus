@@ -45,8 +45,8 @@ namespace Scripts.Controllers
             if (Input.GetMouseButtonDown(1))
                 InputHelper.MouseClick(hit => HandleRightClick(hit));
 
-            //if (Input.GetKeyDown(KeyCode.T))
-            //    actor.Ai.BeginTeleport();
+            if (Input.GetKeyDown(KeyCode.T))
+                GetComponent<Stats>().TakeDamage(7);
 
             if (Input.GetKeyDown(KeyCode.Space))
                 ToggleGamePlayPause();
