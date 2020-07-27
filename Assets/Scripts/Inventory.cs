@@ -15,7 +15,8 @@ namespace Scripts
 
         public int maxSlots = 64;
 
-        public Action<InventoryItem, bool> OnItemAdded; //item added, isIncremement
+        public Action<InventoryItem> OnItemAdded;
+        public Action<InventoryItem> OnStackIncrement;
         public Action<InventoryItem> OnItemRemoved;
 
         public void Add(Item item)
@@ -29,7 +30,7 @@ namespace Scripts
             if (existingStack != null)
             {
                 existingStack.Count++;
-                OnItemAdded?.Invoke(existingStack, true);
+                OnStackIncrement?.Invoke(existingStack);
             }
             else
             {
@@ -40,7 +41,7 @@ namespace Scripts
                     Count = 1
                 };
                 items.Add(itemAdded);
-                OnItemAdded?.Invoke(itemAdded, false);
+                OnItemAdded?.Invoke(itemAdded);
             }
                 
         }
@@ -49,6 +50,8 @@ namespace Scripts
             => Enumerable.Range(1, maxSlots)
                          .Where(x => !items.Any(y => y.Slot == x))
                          .Min();
+
+        public Func<object, object> OnItemIncremented { get; internal set; }
 
         //public void AddRange(IEnumerable<Item> items)
         //    => this.items.AddRange(items);

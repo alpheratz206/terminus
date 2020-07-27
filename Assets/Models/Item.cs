@@ -13,6 +13,6 @@ namespace Models
     {
         public string Name;
         public string InventoryIconPath { get; set; }
-        public int InventoryStackSize { get; set; }
+        public int InventoryStackSize { get; set; } = 1;
     }
 }

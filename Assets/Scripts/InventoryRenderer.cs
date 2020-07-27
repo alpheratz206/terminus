@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scripts
 {
@@ -42,12 +43,26 @@ namespace Scripts
             SetName(name);
             SetActive(false);
 
-            inventory.OnItemAdded += (newItem, isIncrement) => OnItemAdded(newItem, isIncrement);
+            inventory.OnItemAdded += (newItem) => OnItemAdded(newItem);
+            inventory.OnStackIncrement += (newItem) => OnStackIncrement(newItem);
 
             isInit = true;
         }
 
-        private void OnItemAdded(InventoryItem newItem, bool isIncrement)
+        private void OnItemAdded(InventoryItem newItem)
+        {
+            var slot = Body.GetChild(newItem.Slot - 1);
+            var iconParent = slot.GetChild(0);
+
+            iconParent.gameObject.SetActive(true);
+            var sprite = iconParent.GetChild(0);
+            var count = iconParent.GetChild(1);
+
+            sprite.GetComponent<Image>().sprite = newItem.Icon;
+            count.GetComponent<TextMeshProUGUI>().text = "1";
+        }
+
+        private object OnStackIncrement(object newItem)
         {
             throw new NotImplementedException();
         }
@@ -107,8 +122,6 @@ namespace Scripts
                             x: (colNum * (slotSize + paddingLeft)) + paddingLeft,
                             y: -((rowNum * (slotSize + paddingTop)) + paddingTop)
                         );
-
-                    Debug.Log(rect.localPosition - rect.position);
 
                     rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
