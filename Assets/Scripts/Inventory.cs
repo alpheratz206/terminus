@@ -16,7 +16,7 @@ namespace Scripts
         public int maxSlots = 64;
 
         public Action<InventoryItem> OnItemAdded;
-        public Action<InventoryItem> OnStackIncrement;
+        public Action<InventoryItem> OnStackAmtChange;
         public Action<InventoryItem> OnItemRemoved;
 
         public void Add(Item item)
@@ -24,13 +24,13 @@ namespace Scripts
             InventoryItem itemAdded;
 
             InventoryItem existingStack = 
-                items.Where(x => x.Item == item && x.Count < item.InventoryStackSize)
+                items.Where(x => x.Item.Name == item.Name && x.Count < item.InventoryStackSize)
                      .FirstOrDefault();
 
             if (existingStack != null)
             {
                 existingStack.Count++;
-                OnStackIncrement?.Invoke(existingStack);
+                OnStackAmtChange?.Invoke(existingStack);
             }
             else
             {

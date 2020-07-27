@@ -44,7 +44,7 @@ namespace Scripts
             SetActive(false);
 
             inventory.OnItemAdded += (newItem) => OnItemAdded(newItem);
-            inventory.OnStackIncrement += (newItem) => OnStackIncrement(newItem);
+            inventory.OnStackAmtChange += (newItem) => OnStackAmtChange(newItem);
 
             isInit = true;
         }
@@ -62,9 +62,14 @@ namespace Scripts
             count.GetComponent<TextMeshProUGUI>().text = "1";
         }
 
-        private object OnStackIncrement(object newItem)
+        private void OnStackAmtChange(InventoryItem newItem)
         {
-            throw new NotImplementedException();
+            var slot = Body.GetChild(newItem.Slot - 1);
+            var iconParent = slot.GetChild(0);
+
+            var count = iconParent.GetChild(1);
+
+            count.GetComponent<TextMeshProUGUI>().text = newItem.Count.ToString();
         }
 
         private void SetName(string name)
@@ -123,8 +128,9 @@ namespace Scripts
                             y: -((rowNum * (slotSize + paddingTop)) + paddingTop)
                         );
 
-                    rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
-                    rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
+                    var scaleFactor = slotSize / rect.rect.width;
+
+                    rect.transform.localScale = new Vector3(scaleFactor, scaleFactor);
                 }
             }
         }
