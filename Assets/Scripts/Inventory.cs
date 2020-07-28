@@ -19,6 +19,17 @@ namespace Scripts
         public Action<InventoryItem> OnStackAmtChange;
         public Action<InventoryItem> OnItemRemoved;
 
+        private void Start()
+        {
+            OnStackAmtChange = x =>
+            {
+                if (x.Count <= 0)
+                {
+                    Remove(x);
+                }
+            };
+        }
+
         public void Add(Item item)
         {
             InventoryItem itemAdded;
@@ -51,14 +62,10 @@ namespace Scripts
                          .Where(x => !items.Any(y => y.Slot == x))
                          .Min();
 
-        //public void AddRange(IEnumerable<Item> items)
-        //    => this.items.AddRange(items);
-
-        //public void Remove(Item item)
-        //{
-        //    items.Remove(item);
-        //    OnItemRemoved?.Invoke(item);
-        //}
+        public void Remove(InventoryItem item)
+        {
+            items.Remove(item);
+        }
     }
 
     public class InventoryItem

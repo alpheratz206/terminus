@@ -45,7 +45,8 @@ namespace Scripts
             SetActive(false);
 
             inventory.OnItemAdded += (newItem) => OnItemAdded(newItem);
-            inventory.OnStackAmtChange += (newItem) => OnStackAmtChange(newItem);
+            inventory.OnStackAmtChange += (item) => OnStackAmtChange(item);
+            inventory.OnItemRemoved += (item) => OnItemRemoved(item);
 
             isInit = true;
         }
@@ -64,17 +65,38 @@ namespace Scripts
             count.GetComponent<TextMeshProUGUI>().enabled = false;
         }
 
-        private void OnStackAmtChange(InventoryItem newItem)
+        private void OnStackAmtChange(InventoryItem item)
         {
-            var slot = Body.GetChild(newItem.Slot - 1);
+            if(item.Count <= 0)
+            {
+                OnItemRemoved(item);
+                return;
+            }
+
+            var slot = Body.GetChild(item.Slot - 1);
 
             var counter = slot.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
 
-            counter.text = newItem.Count.ToString();
-            if (newItem.Count > 1)
+            counter.text = item.Count.ToString();
+            if (item.Count > 1)
                 counter.enabled = true;
             else
                 counter.enabled = false;
+        }
+
+        private void OnItemRemoved(InventoryItem item)
+        {
+            var slot = Body.GetChild(item.Slot - 1);
+            var iconParent = slot.GetChild(0);
+
+            var sprite = iconParent.GetChild(0);
+            var count = iconParent.GetChild(1);
+
+            sprite.GetComponent<Image>().sprite = null;
+            sprite.GetComponent<Button>().onClick.RemoveAllListeners();
+            count.GetComponent<TextMeshProUGUI>().enabled = false;
+
+            iconParent.gameObject.SetActive(false);
         }
 
         private void SetName(string name)
