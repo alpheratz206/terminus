@@ -158,7 +158,6 @@ namespace Scripts
                     var scaleFactor = slotSize / rect.rect.width;
 
                     rect.transform.localScale = new Vector3(scaleFactor, scaleFactor);
-                    newSlot.AddComponent<TestInteraction>();
                 }
             }
         }

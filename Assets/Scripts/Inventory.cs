@@ -49,7 +49,7 @@ namespace Scripts
                     Item = item,
                     Slot = NextAvilableSlot,
                     Count = 1,
-                    OnStackAmtChange = this.OnStackAmtChange
+                    Inventory = this
                 };
                 items.Add(itemAdded);
                 OnItemAdded?.Invoke(itemAdded);
@@ -70,6 +70,7 @@ namespace Scripts
 
     public class InventoryItem
     {
+        public Inventory Inventory;
         public InventoryItem()
         {
             OnUse = () => Item.OnInventoryUse(this);
@@ -81,17 +82,16 @@ namespace Scripts
         public Sprite Icon =>
             Resources.Load<Sprite>(Item.InventoryIconPath);
         public Action OnUse { get; set; }
-        public Action<InventoryItem> OnStackAmtChange { get; set; }
         public static InventoryItem operator ++(InventoryItem item)
         {
             item.Count++;
-            item.OnStackAmtChange?.Invoke(item);
+            item.Inventory.OnStackAmtChange?.Invoke(item);
             return item;
         }
         public static InventoryItem operator --(InventoryItem item)
         {
             item.Count--;
-            item.OnStackAmtChange?.Invoke(item);
+            item.Inventory.OnStackAmtChange?.Invoke(item);
             return item;
         }
 
