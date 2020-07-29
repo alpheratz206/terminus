@@ -16,8 +16,7 @@ namespace Models
 
         public override void OnInventoryUse(InventoryItem invDetails)
         {
-            invDetails.Inventory.GetComponent<EquipmentRig>().Add(this);
-            invDetails--;
+            invDetails.Inventory.GetComponent<EquipmentRig>().Add(invDetails);
         }
     }
 }

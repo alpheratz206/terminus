@@ -1,5 +1,6 @@
 ﻿using Assets.Enums;
 using Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,32 +9,26 @@ namespace Scripts
 {
     public class EquipmentRig : MonoBehaviour
     {
-        private bool bLinkedInventory = false;
-        private Inventory Inventory;
-
         private Dictionary<EquipmentType, Equipment> Equipment
             = new Dictionary<EquipmentType, Equipment>();
 
+        public Action<InventoryItem> OnItemAdded;
+        public Action<Equipment> OnItemRemoved;
 
-        private void Start()
+        public void Add(InventoryItem invDetails)
         {
-            if (TryGetComponent(out Inventory))
-                bLinkedInventory = true;
-        }
-
-        public void Add(Equipment equipment)
-        {
+            var equipment = invDetails.Item as Equipment;
             var slot = equipment.Type;
 
             if(Equipment.TryGetValue(slot, out Equipment foundEquipped))
             {
-                if (bLinkedInventory)
-                    Inventory.Add(foundEquipped);
-
+                //OnItemRemoved?.Invoke(invDetails);
                 Equipment[slot] = null;
             }
 
             Equipment[slot] = equipment;
+            OnItemAdded?.Invoke(invDetails);
+            Debug.Log($"{name} equipped {equipment.Name}!");
         }
     }
 }

@@ -21,13 +21,13 @@ namespace Scripts
 
         private void Start()
         {
-            OnStackAmtChange = x =>
+            OnStackAmtChange = x => { if (x.Count <= 0) { Remove(x); } };
+
+            if(TryGetComponent(out EquipmentRig rig))
             {
-                if (x.Count <= 0)
-                {
-                    Remove(x);
-                }
-            };
+                rig.OnItemAdded += x => Remove(x);
+                rig.OnItemRemoved += x => Add(x);
+            }
         }
 
         public void Add(Item item)
@@ -65,6 +65,7 @@ namespace Scripts
         public void Remove(InventoryItem item)
         {
             items.Remove(item);
+            OnItemRemoved?.Invoke(item);
         }
     }
 
