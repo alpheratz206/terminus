@@ -44,6 +44,6 @@ namespace Scripts
                 Debug.Log($"{name} healed by {restored}.");
         }
 
-        public virtual void OnDeath() { Debug.Log($"{name} died!"); }
+        public virtual void OnDeath() { Destroy(gameObject);  Debug.Log($"{name} died!"); }
     }
 }

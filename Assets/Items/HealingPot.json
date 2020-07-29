@@ -1,6 +1,6 @@
 {
   "Name": "Potion of Healing",
-  "InventoryIconPath": "cross",
+  "InventoryIconPath": "HealthPot",
   "EffectType": "Heal",
   "EffectSize": 10,
   "InventoryStackSize": 50

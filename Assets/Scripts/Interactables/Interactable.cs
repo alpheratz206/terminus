@@ -69,7 +69,9 @@ namespace Scripts.Interactables
             Guid id,
             Action onInteract)
         {
-            while(Vector3.Distance(interestedParty.position, interactionTransform.position) > interactionRadius)
+            while(Vector3.Distance(
+              new Vector3(interestedParty.position.x, 0, interestedParty.position.z),
+              new Vector3(interactionTransform.position.x, 0, interactionTransform.position.z)) > interactionRadius)
                 yield return null;
 
             onInteract?.Invoke();

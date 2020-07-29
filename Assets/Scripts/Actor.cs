@@ -55,7 +55,7 @@ namespace Scripts
 
         public void RemoveFocus()
         {
-            if (InteractionID != Guid.Empty)
+            if (Focus != null && InteractionID != Guid.Empty)
             {
                 Focus.StopInteracting(InteractionID);
                 Focus = null;

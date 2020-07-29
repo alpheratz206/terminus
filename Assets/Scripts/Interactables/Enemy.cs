@@ -11,6 +11,8 @@ namespace Scripts.Interactables
     [RequireComponent(typeof(Stats))]
     public class Enemy : Interactable
     {
+        public bool isHostile = true;
+
         private Stats stats;
 
         private void Start()
@@ -20,7 +22,7 @@ namespace Scripts.Interactables
 
         public override string ActionName => $"Attack {name}";
 
-        public override bool IsAccessible => true;
+        public override bool IsAccessible => isHostile;
 
         protected override void OnInteract(Transform interestedParty)
         {
