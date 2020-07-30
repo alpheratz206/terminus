@@ -9,6 +9,9 @@ namespace Scripts
 {
     public class Stats : MonoBehaviour
     {
+        public int damage = 10;
+        public int attackCooldown = 2;
+
         public int maxHealth = 100;
         [SerializeField]
         private int Health;

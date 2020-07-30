@@ -47,6 +47,9 @@ namespace Scripts
 
         public void SetFocus(Interactable newFocus)
         {
+            if (Focus == newFocus)
+                return;
+
             RemoveFocus();
             Focus = newFocus;
             InteractionID = newFocus.BeginInteract(transform);

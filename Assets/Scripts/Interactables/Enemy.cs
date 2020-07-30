@@ -27,6 +27,12 @@ namespace Scripts.Interactables
         protected override void OnInteract(Transform interestedParty)
         {
             Debug.Log($"{name} is being attacked by {interestedParty.name}!");
+
+            if(TryGetComponent(out Actor thisActor) && interestedParty.TryGetComponent(out Enemy enemy))
+            {
+                thisActor.SetFocus(enemy);
+            }
+
             Engaging = Engage(interestedParty);
             StartCoroutine(Engaging);
         }
@@ -43,8 +49,10 @@ namespace Scripts.Interactables
         private IEnumerator Engaging;
         private IEnumerator Engage(Transform interestedParty)
         {
-            while (stats.TakeDamage(20))
-                yield return new WaitForSeconds(3);
+            var enemyStats = interestedParty.GetComponent<Stats>();
+
+            while (stats.TakeDamage(enemyStats.damage))
+                yield return new WaitForSeconds(enemyStats.attackCooldown);
         }
     }
 }
