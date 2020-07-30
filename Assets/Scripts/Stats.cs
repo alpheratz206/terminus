@@ -26,6 +26,8 @@ namespace Scripts
             if (Health <= damage)
             {
                 Health = 0;
+                if (TryGetComponent(out Actor thisActor))
+                    thisActor.RemoveFocus();
                 OnDeath();
                 return false;
             }

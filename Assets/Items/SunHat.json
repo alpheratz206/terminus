@@ -1,0 +1,6 @@
+{
+  "Name": "Sun Hat",
+  "InventoryIconPath": "Sun_Hat",
+  "EquipmentType": "Head",
+  "MeshPath": "SunHatMesh"
+}
