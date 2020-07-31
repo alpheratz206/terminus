@@ -5,16 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Scripts
 {
     public class EquipmentRenderer : MonoBehaviour
     {
+        [Serializable] public class EquipmentMeshDictionary : SerializableDictionary<EquipmentType, SkinnedMeshRenderer> { }
+
         public SkinnedMeshRenderer baseMesh;
 
-        private Dictionary<EquipmentType, SkinnedMeshRenderer> Equipment
-            = new Dictionary<EquipmentType, SkinnedMeshRenderer>();
+        public EquipmentMeshDictionary defaultEquipment
+            = new EquipmentMeshDictionary();
+
+        public EquipmentMeshDictionary Equipment
+            = new EquipmentMeshDictionary();
 
         public void Start()
         {
@@ -28,16 +34,21 @@ namespace Scripts
         }
 
         private void OnEquip(InventoryItem invItem)
+            => Equip(invItem.Item as Equipment);
+
+        private void Equip(Equipment equipment)
+            => Equip(equipment.Type, equipment.Mesh);
+
+        private void Equip(EquipmentType slot, SkinnedMeshRenderer mesh)
         {
-            var equipment = invItem.Item as Equipment;
+            var newMesh = Instantiate(mesh);
 
-            var mesh = Instantiate(equipment.Mesh);
-            Equipment.Add(equipment.Type, mesh);
+            Equipment.Add(slot, newMesh);
 
-            mesh.transform.parent = transform;
+            newMesh.transform.parent = transform;
 
-            mesh.bones = baseMesh.bones;
-            mesh.rootBone = baseMesh.rootBone;
+            newMesh.bones = baseMesh.bones;
+            newMesh.rootBone = baseMesh.rootBone;
         }
 
         private void OnUnequip(Equipment item)
@@ -46,6 +57,11 @@ namespace Scripts
             {
                 Equipment.Remove(item.Type);
                 Destroy(mesh.gameObject);
+            }
+
+            if(defaultEquipment.TryGetValue(item.Type, out SkinnedMeshRenderer defaultMesh))
+            {
+                Equip(item.Type, defaultMesh);
             }
         }
     }
