@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Enums
 {
+    [Serializable]
     public enum EquipmentType
     {
         Head = 1,

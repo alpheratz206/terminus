@@ -19,7 +19,7 @@ namespace Scripts
         public EquipmentMeshDictionary defaultEquipment
             = new EquipmentMeshDictionary();
 
-        public EquipmentMeshDictionary Equipment
+        private EquipmentMeshDictionary Equipment
             = new EquipmentMeshDictionary();
 
         public void Start()
@@ -31,6 +31,9 @@ namespace Scripts
                 rig.OnItemAdded += x => OnEquip(x);
                 rig.OnItemRemoved += x => OnUnequip(x);
             }
+
+            foreach(var slotMeshPair in defaultEquipment)
+                Equip(slotMeshPair.Key, slotMeshPair.Value);
         }
 
         private void OnEquip(InventoryItem invItem)
