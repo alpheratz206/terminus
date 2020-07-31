@@ -1,4 +1,4 @@
-﻿using Assets.Enums;
+﻿using Enums;
 using Models;
 using System;
 using System.Collections;
@@ -20,15 +20,20 @@ namespace Scripts
             var equipment = invDetails.Item as Equipment;
             var slot = equipment.Type;
 
-            if(Equipment.TryGetValue(slot, out Equipment foundEquipped))
-            {
-                //OnItemRemoved?.Invoke(invDetails);
-                Equipment[slot] = null;
-            }
+            TryUnequip(slot);
 
             Equipment[slot] = equipment;
             OnItemAdded?.Invoke(invDetails);
             Debug.Log($"{name} equipped {equipment.Name}!");
+        }
+
+        private void TryUnequip(EquipmentType slot)
+        {
+            if (Equipment.TryGetValue(slot, out Equipment foundEquipped))
+            {
+                OnItemRemoved?.Invoke(foundEquipped);
+                Equipment[slot] = null;
+            }
         }
     }
 }

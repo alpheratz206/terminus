@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Enums;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,16 @@ namespace Scripts
 {
     public class EquipmentRenderer : MonoBehaviour
     {
-        public Transform rootBone;
-        public GameObject armature;
+        public SkinnedMeshRenderer baseMesh;
+
+        private Dictionary<EquipmentType, SkinnedMeshRenderer> Equipment
+            = new Dictionary<EquipmentType, SkinnedMeshRenderer>();
 
         public void Start()
         {
-            if (TryGetComponent(out EquipmentRig rig))
+            var actor = transform.parent;
+
+            if (actor.TryGetComponent(out EquipmentRig rig))
             {
                 rig.OnItemAdded += x => OnEquip(x);
                 rig.OnItemRemoved += x => OnUnequip(x);
@@ -27,15 +32,21 @@ namespace Scripts
             var equipment = invItem.Item as Equipment;
 
             var mesh = Instantiate(equipment.Mesh);
+            Equipment.Add(equipment.Type, mesh);
 
-            mesh.transform.parent = transform.GetChild(2).transform;
-            mesh.bones = transform.GetChild(2).GetChild(1).GetComponent<SkinnedMeshRenderer>().bones;
-            mesh.rootBone = rootBone;
+            mesh.transform.parent = transform;
+
+            mesh.bones = baseMesh.bones;
+            mesh.rootBone = baseMesh.rootBone;
         }
 
         private void OnUnequip(Equipment item)
         {
-            throw new NotImplementedException();
+            if(Equipment.TryGetValue(item.Type, out SkinnedMeshRenderer mesh))
+            {
+                Equipment.Remove(item.Type);
+                Destroy(mesh.gameObject);
+            }
         }
     }
 }
