@@ -61,7 +61,7 @@ namespace Scripts
             var count = iconParent.GetChild(1);
 
             sprite.GetComponent<Image>().sprite = newItem.Icon;
-            sprite.GetComponent<Button>().onClick.AddListener(() => newItem.OnUse());
+            sprite.GetComponent<Button>().onClick.AddListener(() => newItem.OnUse(newItem));
             count.GetComponent<TextMeshProUGUI>().enabled = false;
         }
 

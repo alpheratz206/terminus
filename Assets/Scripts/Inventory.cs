@@ -10,6 +10,8 @@ namespace Scripts
 {
     public class Inventory : MonoBehaviour
     {
+        public TextAsset[] startingItems; 
+
         public List<InventoryItem> items
             = new List<InventoryItem>();
 
@@ -18,6 +20,8 @@ namespace Scripts
         public Action<InventoryItem> OnItemAdded;
         public Action<InventoryItem> OnStackAmtChange;
         public Action<InventoryItem> OnItemRemoved;
+
+        public Action<InventoryItem> OverrideOnItemUse;
 
         private void Start()
         {
@@ -28,6 +32,9 @@ namespace Scripts
                 rig.OnItemAdded += x => Remove(x);
                 rig.OnItemRemoved += x => Add(x);
             }
+
+            foreach(var json in startingItems)
+                Add(Item.Init(json));
         }
 
         public void Add(Item item)
@@ -51,6 +58,7 @@ namespace Scripts
                     Count = 1,
                     Inventory = this
                 };
+
                 items.Add(itemAdded);
                 OnItemAdded?.Invoke(itemAdded);
             }
@@ -72,9 +80,10 @@ namespace Scripts
     public class InventoryItem
     {
         public Inventory Inventory;
+
         public InventoryItem()
         {
-            OnUse = () => Item.OnInventoryUse(this);
+            OnUse = x => Item.OnInventoryUse(x);
         }
 
         public Item Item { get; set; }
@@ -82,13 +91,21 @@ namespace Scripts
         public int Slot { get; set; }
         public Sprite Icon =>
             Resources.Load<Sprite>(Item.InventoryIconPath);
-        public Action OnUse { get; set; }
+
+        private Action<InventoryItem> onUse;
+        public Action<InventoryItem> OnUse
+        {
+            get => Inventory.OverrideOnItemUse ?? onUse;
+            set => onUse = value;
+        }
+
         public static InventoryItem operator ++(InventoryItem item)
         {
             item.Count++;
             item.Inventory.OnStackAmtChange?.Invoke(item);
             return item;
         }
+
         public static InventoryItem operator --(InventoryItem item)
         {
             item.Count--;

@@ -15,14 +15,32 @@ namespace Scripts.Interactables
 
         public override bool IsAccessible => true;
 
+        private Inventory inv;
+        private InventoryRenderer invRenderer;
+
+        private void Start()
+        {
+            inv = GetComponent<Inventory>();
+            invRenderer = GetComponent<InventoryRenderer>();
+        }
+
         protected override void OnInteract(Transform interestedParty)
         {
-            throw new NotImplementedException();
+            if(interestedParty.TryGetComponent(out Inventory userInventory))
+            {
+                inv.OverrideOnItemUse = x =>
+                {
+                    inv.Remove(x);
+                    userInventory.Add(x.Item);
+                };
+                invRenderer.SetActive(true);
+            }
         }
 
         protected override void OnStopInteract()
         {
-            throw new NotImplementedException();
+            inv.OverrideOnItemUse = null;
+            invRenderer.SetActive(false);
         }
     }
 }

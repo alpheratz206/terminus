@@ -21,14 +21,7 @@ namespace Scripts.Interactables
 
         private void Start()
         {
-            var jObj = itemJson ? JsonConvert.DeserializeObject<JObject>(itemJson.text) : null;
-
-            if (jObj.ContainsKey("EffectType"))
-                item = jObj.ToObject<Consumable>();
-            else if (jObj.ContainsKey("EquipmentType"))
-                item = jObj.ToObject<Equipment>();
-            else
-                item = jObj.ToObject<Item>();
+            item = Item.Init(itemJson);
         }
 
         protected override void OnInteract(Transform interestedParty)

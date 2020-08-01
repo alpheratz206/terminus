@@ -1,6 +1,6 @@
 {
   "Name": "Blue Jumper",
-  "InventoryIconPath": "circle",
+  "InventoryIconPath": "BlueJumper",
   "EquipmentType": "Chest",
   "MeshPath": "MaleBlueJumperMesh"
 }
