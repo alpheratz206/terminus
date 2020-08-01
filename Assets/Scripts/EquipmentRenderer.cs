@@ -46,6 +46,8 @@ namespace Scripts
         {
             var newMesh = Instantiate(mesh);
 
+            TryUnequip(slot);
+
             Equipment.Add(slot, newMesh);
 
             newMesh.transform.parent = transform;
@@ -56,15 +58,24 @@ namespace Scripts
 
         private void OnUnequip(Equipment item)
         {
-            if(Equipment.TryGetValue(item.Type, out SkinnedMeshRenderer mesh))
+            TryUnequip(item.Type);
+            TryEquipDefault(item.Type);
+        }
+
+        private void TryUnequip(EquipmentType slot)
+        {
+            if (Equipment.TryGetValue(slot, out SkinnedMeshRenderer mesh))
             {
-                Equipment.Remove(item.Type);
+                Equipment.Remove(slot);
                 Destroy(mesh.gameObject);
             }
+        }
 
-            if(defaultEquipment.TryGetValue(item.Type, out SkinnedMeshRenderer defaultMesh))
+        private void TryEquipDefault(EquipmentType slot)
+        {
+            if (defaultEquipment.TryGetValue(slot, out SkinnedMeshRenderer defaultMesh))
             {
-                Equip(item.Type, defaultMesh);
+                Equip(slot, defaultMesh);
             }
         }
     }

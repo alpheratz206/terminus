@@ -2019,6 +2019,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseMesh: {fileID: 2083398915}
+  defaultEquipment:
+    _Buckets: ffffffff0100000000000000
+    _HashCodes: 020000000400000000000000
+    _Next: ffffffffffffffff00000000
+    _Count: 2
+    _Version: 30
+    _FreeList: -1
+    _FreeCount: 0
+    _Keys: 020000000400000000000000
+    _Values:
+    - {fileID: 5807712538022919307, guid: c08482c9b75a00f41a2d4929199d3548, type: 3}
+    - {fileID: 4809204482609779078, guid: 3fcd2e2d7617c64408f30cbdf851918d, type: 3}
+    - {fileID: 0}
 --- !u!1 &670297347
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,7 +4280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionTransform: {fileID: 1385450361}
   interactionRadius: 1.5
-  itemJson: {fileID: 4900000, guid: 92f10fe258fdef94d9ff7ac2d1a16107, type: 3}
+  itemJson: {fileID: 4900000, guid: f148a71266bc73448ba63c197936b2b9, type: 3}
   item:
     Name: 
 --- !u!135 &1385450358
@@ -5738,6 +5751,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Body
       objectReference: {fileID: 0}
+    - target: {fileID: 380084607852511194, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6165404776058201968, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
       propertyPath: m_Name
@@ -5827,6 +5845,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266350814595800492, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8313729861411773819, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13cb1d52e9d61cc4d93b36ab280c746c, type: 3}
