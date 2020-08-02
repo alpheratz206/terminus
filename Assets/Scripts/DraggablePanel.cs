@@ -14,7 +14,6 @@ namespace Scripts
     {
         protected RectTransform rectTransform;
         protected Vector2 initRectPos;
-        protected Vector2 mousePos;
 
         private void Start()
         {
@@ -24,15 +23,11 @@ namespace Scripts
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
             initRectPos = rectTransform.position;
-            mousePos = eventData.position;
         }
 
         public virtual void OnDrag(PointerEventData eventData)
         {
-            var delta = eventData.position - mousePos;
-            rectTransform.position += new Vector3(delta.x, delta.y, transform.position.z);
-
-            mousePos = eventData.position;
+            rectTransform.position += new Vector3(eventData.delta.x, eventData.delta.y);
         }
     }
 }

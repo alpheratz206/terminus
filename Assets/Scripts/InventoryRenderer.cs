@@ -71,7 +71,11 @@ namespace Scripts
 
             sprite.GetComponent<Image>().sprite = newItem.Icon;
             sprite.GetComponent<Button>().onClick.AddListener(() => newItem.OnUse(newItem));
-            count.GetComponent<TextMeshProUGUI>().enabled = false;
+
+            var countText = count.GetComponent<TextMeshProUGUI>();
+            countText.text = newItem.Count.ToString();
+            countText.enabled = newItem.Count > 1;
+
         }
 
         private void OnStackAmtChange(InventoryItem item)
