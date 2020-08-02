@@ -12,6 +12,8 @@ namespace Scripts
         public int damage = 10;
         public int attackCooldown = 2;
 
+        public int damageThreshhold = 0;
+
         public int maxHealth = 100;
         [SerializeField]
         private int Health;
@@ -21,9 +23,11 @@ namespace Scripts
             Health = maxHealth;
         }
 
-        public bool TakeDamage(int damage)
+        public bool TakeDamage(int incomingDamage)
         {
-            if (Health <= damage)
+            int damageTaken = CalculateDamage(incomingDamage);
+
+            if (Health <= damageTaken)
             {
                 Health = 0;
                 if (TryGetComponent(out Actor thisActor))
@@ -32,9 +36,17 @@ namespace Scripts
                 return false;
             }
 
-            Debug.Log($"{name} takes {damage} damage!");
-            Health -= damage;
+            Debug.Log($"{name} takes {damageTaken} damage!");
+            Health -= damageTaken;
             return true;
+        }
+
+        private int CalculateDamage(int incoming)
+        {
+            if (incoming < damageThreshhold)
+                return 0;
+
+            return incoming;
         }
 
         public void Heal(int restored)

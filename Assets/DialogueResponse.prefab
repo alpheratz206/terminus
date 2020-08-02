@@ -66,15 +66,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 03930835dbd74654aaf141ad0c37b79d, type: 2}
-  m_sharedMaterial: {fileID: 9184388001941062430, guid: 03930835dbd74654aaf141ad0c37b79d,
+  m_fontAsset: {fileID: 11400000, guid: 528d59c209da71f4b9f4e099a4010608, type: 2}
+  m_sharedMaterial: {fileID: 3601714572681484812, guid: 528d59c209da71f4b9f4e099a4010608,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255706
+    rgba: 4294113742
   m_fontColor: {r: 0.80784315, g: 0.9764706, b: 0.9490196, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -139,7 +139,7 @@ MonoBehaviour:
     spaceCount: 0
     wordCount: 1
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

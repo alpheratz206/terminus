@@ -92,7 +92,7 @@ namespace Scripts
         public Sprite Icon =>
             Resources.Load<Sprite>(Item.InventoryIconPath);
 
-        private Action<InventoryItem> onUse;
+        public Action<InventoryItem> onUse;
         public Action<InventoryItem> OnUse
         {
             get => Inventory.OverrideOnItemUse ?? onUse;

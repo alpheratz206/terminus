@@ -28,12 +28,20 @@ namespace Scripts.Interactables
         {
             if(interestedParty.TryGetComponent(out Inventory userInventory))
             {
-                inv.OverrideOnItemUse = x =>
-                {
-                    inv.Remove(x);
-                    userInventory.Add(x.Item);
-                };
+                inv.OverrideOnItemUse =
+                    x => ItemUseOverride(x, userInventory);
                 invRenderer.SetActive(true);
+            }
+        }
+
+        private void ItemUseOverride(InventoryItem invItem, Inventory userInventory)
+        {
+            if(Input.GetKeyDown(KeyCode.LeftShift))
+                invItem.onUse(invItem);
+            else
+            {
+                inv.Remove(invItem);
+                userInventory.Add(invItem.Item);
             }
         }
 

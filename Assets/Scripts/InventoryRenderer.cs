@@ -14,21 +14,20 @@ namespace Scripts
     public class InventoryRenderer : MonoBehaviour
     {
         private GameObject InventoryUI;
-
         private Transform Header => InventoryUI.transform.GetChild(0);
         private Transform Body => InventoryUI.transform.GetChild(1);
 
         public GameObject canvas;
         public GameObject InventoryPrefab;
         public GameObject SlotPrefab;
-
-        public int size;
         
         public int rows;
 
         public float slotSize;
         public float paddingLeft;
         public float paddingTop;
+
+        public float TotalWidth => Body.GetComponent<RectTransform>().rect.width;
 
         public bool isInit = false;
 
@@ -103,7 +102,14 @@ namespace Scripts
             => Header.GetComponentInChildren<TextMeshProUGUI>().text = name;
 
         public void SetActive(bool b = true)
-            => InventoryUI.SetActive(b);
+        {
+            InventoryUI.GetComponent<RectTransform>().anchoredPosition =
+                PanelManager.Instance.GetNewPanelPosition(
+                    InventoryUI.GetComponent<RectTransform>()
+                );
+
+            InventoryUI.SetActive(b);
+        }
 
         public void ToggleActive()
             => SetActive(!InventoryUI.activeSelf);
@@ -118,14 +124,22 @@ namespace Scripts
         {
             InventoryUI = Instantiate(InventoryPrefab);
             InventoryUI.transform.SetParent(canvas.transform, false);
+            PanelManager.Instance.ManagedPanels.Add(InventoryUI);
             Resize(size, rows);
             AddSlots(size, rows);
         }
 
         private void Resize(int numSlots, int numRows)
         {
+            var mainRect = InventoryUI.GetComponent<RectTransform>();
             var rect = Body.GetComponent<RectTransform>();
 
+            SetSizeOfRect(numSlots, numRows, mainRect);
+            SetSizeOfRect(numSlots, numRows, rect);
+        }
+
+        private void SetSizeOfRect(int numSlots, int numRows, RectTransform rect)
+        {
             rect.SetSizeWithCurrentAnchors(
                     RectTransform.Axis.Horizontal,
                     (numSlots / numRows) * (slotSize + paddingLeft) + paddingLeft
