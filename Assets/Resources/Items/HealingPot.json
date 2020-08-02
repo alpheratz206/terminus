@@ -1,4 +1,5 @@
 {
+  "ID": "HealingPot",
   "Name": "Potion of Healing",
   "InventoryIconPath": "Sprites/HealthPot",
   "EffectType": "Heal",

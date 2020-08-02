@@ -1,4 +1,5 @@
 {
+  "ID":  "SunHat",
   "Name": "Sun Hat",
   "InventoryIconPath": "Sprites/Sun_Hat",
   "EquipmentType": "Head",

@@ -1,4 +1,5 @@
 {
+  "ID": "LeatherTrousers",
   "Name": "Leather Trousers",
   "InventoryIconPath": "Sprites/cross",
   "EquipmentType": "Legs",

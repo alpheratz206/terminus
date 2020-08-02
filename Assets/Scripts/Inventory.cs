@@ -10,7 +10,7 @@ namespace Scripts
 {
     public class Inventory : MonoBehaviour
     {
-        public TextAsset[] startingItems; 
+        public string[] startingItems;
 
         public List<InventoryItem> items
             = new List<InventoryItem>();
@@ -33,8 +33,8 @@ namespace Scripts
                 rig.OnItemRemoved += x => Add(x);
             }
 
-            foreach(var json in startingItems)
-                Add(Item.Init(json));
+            foreach(var id in startingItems)
+                Add(ItemRepository.Get(id));
         }
 
         public void Add(InventoryItem item)

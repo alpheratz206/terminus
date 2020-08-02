@@ -13,10 +13,14 @@ namespace Assets.Scripts
     public class DragAndDrop : DraggablePanel, IEndDragHandler
     {
         private CanvasGroup canvasGroup;
+        private Transform slot;
+        private int slotIndex;
 
         private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
+            slot = transform.parent;
+            slotIndex = slot.GetSiblingIndex();
         }
 
         public InventoryItem Item { get; set; }
@@ -26,6 +30,8 @@ namespace Assets.Scripts
             base.OnBeginDrag(eventData);
             canvasGroup.alpha = .6f;
             canvasGroup.blocksRaycasts = false;
+
+            slot.SetAsLastSibling();
         }
 
         public override void OnDrag(PointerEventData eventData)
@@ -40,6 +46,7 @@ namespace Assets.Scripts
 
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
+            slot.SetSiblingIndex(slotIndex);
 
             if (!maybeSlot.TryGetComponent(out DragAndDropTarget dropTarget))
                 return;

@@ -16,12 +16,13 @@ namespace Scripts.Interactables
 
         public override bool IsAccessible => true;
 
+        public string itemID;
         public TextAsset itemJson;
         public Item item;
 
         private void Start()
         {
-            item = Item.Init(itemJson);
+            item = ItemRepository.Get(itemID);
         }
 
         protected override void OnInteract(Transform interestedParty)

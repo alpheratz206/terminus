@@ -1,4 +1,5 @@
 {
+  "ID": "BlueJumper",
   "Name": "Blue Jumper",
   "InventoryIconPath": "Sprites/BlueJumper",
   "EquipmentType": "Chest",

@@ -544,9 +544,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingItems:
-  - {fileID: 4900000, guid: f148a71266bc73448ba63c197936b2b9, type: 3}
-  - {fileID: 4900000, guid: 10977486f5ec66e43aeb044b50194226, type: 3}
-  - {fileID: 4900000, guid: bf3939851531c074e813c41c26f1b5d3, type: 3}
+  - RedJumper
+  - BlueJumper
+  - LeatherTrousers
   maxSlots: 30
 --- !u!65 &97209290
 BoxCollider:
@@ -1930,9 +1930,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionTransform: {fileID: 485191034}
   interactionRadius: 2
+  itemID: SunHat
   itemJson: {fileID: 4900000, guid: 79a358c1dc47c4d4e8e8b43acf49d5e5, type: 3}
-  item:
-    Name: 
 --- !u!4 &485191034 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aff201c7616209943a2ace3cad9db5d8,
@@ -2033,6 +2032,7 @@ GameObject:
   - component: {fileID: 556954595}
   - component: {fileID: 556954597}
   - component: {fileID: 556954598}
+  - component: {fileID: 556954599}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2100,8 +2100,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialPosition: {x: 50, y: -50}
-  spacing: 2
+  spacing: 7
   ManagedPanels: []
+--- !u!114 &556954599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556954594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 067f35ae63dca25468b0c8f7ac39b559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &583163574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,9 +2311,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionTransform: {fileID: 682349310}
   interactionRadius: 1.5
+  itemID: 
   itemJson: {fileID: 4900000, guid: 92f10fe258fdef94d9ff7ac2d1a16107, type: 3}
-  item:
-    Name: 
 --- !u!135 &682349307
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3401,9 +3412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionTransform: {fileID: 860445564}
   interactionRadius: 1.5
+  itemID: 
   itemJson: {fileID: 4900000, guid: f308a1ae93e758d44b0e31467ae41a23, type: 3}
-  item:
-    Name: 
 --- !u!4 &955533103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5c784a094a45f6e488c1f2dc83155f5c,
@@ -3744,9 +3754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionTransform: {fileID: 144800102}
   interactionRadius: 1.5
+  itemID: 
   itemJson: {fileID: 4900000, guid: f308a1ae93e758d44b0e31467ae41a23, type: 3}
-  item:
-    Name: 
 --- !u!136 &1025620553
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5578,9 +5587,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionTransform: {fileID: 1559614747}
   interactionRadius: 1.5
+  itemID: 
   itemJson: {fileID: 4900000, guid: f308a1ae93e758d44b0e31467ae41a23, type: 3}
-  item:
-    Name: 
 --- !u!136 &2146701215
 CapsuleCollider:
   m_ObjectHideFlags: 0
