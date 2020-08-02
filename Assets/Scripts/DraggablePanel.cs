@@ -12,20 +12,22 @@ namespace Scripts
 {
     public class DraggablePanel : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
-        private RectTransform rectTransform;
-        private Vector2 mousePos;
+        protected RectTransform rectTransform;
+        protected Vector2 initRectPos;
+        protected Vector2 mousePos;
 
         private void Start()
         {
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public void OnBeginDrag(PointerEventData eventData)
+        public virtual void OnBeginDrag(PointerEventData eventData)
         {
+            initRectPos = rectTransform.position;
             mousePos = eventData.position;
         }
 
-        public void OnDrag(PointerEventData eventData)
+        public virtual void OnDrag(PointerEventData eventData)
         {
             var delta = eventData.position - mousePos;
             rectTransform.position += new Vector3(delta.x, delta.y, transform.position.z);

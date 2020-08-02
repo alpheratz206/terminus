@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Assets.Scripts;
+using Models;
 using Scripts.Interactables;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace Scripts
         private GameObject InventoryUI;
         private Transform Header => InventoryUI.transform.GetChild(0);
         private Transform Body => InventoryUI.transform.GetChild(1);
+
+        private Inventory LinkedInventory;
 
         public GameObject canvas;
         public GameObject InventoryPrefab;
@@ -39,6 +42,8 @@ namespace Scripts
 
         public void Init(Inventory inventory)
         {
+            LinkedInventory = inventory;
+
             Draw(inventory.maxSlots);
             SetName(name);
             SetActive(false);
@@ -56,8 +61,13 @@ namespace Scripts
             var iconParent = slot.GetChild(0);
 
             iconParent.gameObject.SetActive(true);
+            var dragAndDrop = iconParent.GetComponent<DragAndDrop>();
+            dragAndDrop.Item = newItem;
+
             var sprite = iconParent.GetChild(0);
             var count = iconParent.GetChild(1);
+
+            sprite.name = $"Sprite ({newItem.Item.Name})";
 
             sprite.GetComponent<Image>().sprite = newItem.Icon;
             sprite.GetComponent<Button>().onClick.AddListener(() => newItem.OnUse(newItem));
@@ -162,6 +172,12 @@ namespace Scripts
                     var rect = newSlot.GetComponent<RectTransform>();
 
                     newSlot.transform.SetParent(Body);
+                    newSlot.name = $"Slot {rowNum}-{colNum}";
+
+                    var dropTarget = newSlot.GetComponent<DragAndDropTarget>();
+                        
+                    dropTarget.inventory = LinkedInventory;
+                    dropTarget.slotNum = rowNum * (numSlots / numRows) + colNum + 1;
 
                     rect.localPosition
                         = new Vector3(

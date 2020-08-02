@@ -1,6 +1,6 @@
 {
   "Name": "Leather Trousers",
-  "InventoryIconPath": "cross",
+  "InventoryIconPath": "Sprites/cross",
   "EquipmentType": "Legs",
-  "MeshPath": "MaleLeatherTrouserMesh"
+  "MeshPath": "SkinnedMeshes/MaleLeatherTrouserMesh"
 }

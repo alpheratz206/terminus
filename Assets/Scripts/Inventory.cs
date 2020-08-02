@@ -37,7 +37,10 @@ namespace Scripts
                 Add(Item.Init(json));
         }
 
-        public void Add(Item item)
+        public void Add(InventoryItem item)
+            => Add(item.Item, item.Count, item.Slot);
+
+        public void Add(Item item, int count = 1, int? slot = null)
         {
             InventoryItem itemAdded;
 
@@ -47,15 +50,15 @@ namespace Scripts
 
             if (existingStack != null)
             {
-                existingStack++;
+                existingStack.Increment(count);
             }
             else
             {
                 itemAdded = new InventoryItem()
                 {
                     Item = item,
-                    Slot = NextAvilableSlot,
-                    Count = 1,
+                    Slot = slot ?? NextAvilableSlot,
+                    Count = count,
                     Inventory = this
                 };
 
@@ -99,11 +102,25 @@ namespace Scripts
             set => onUse = value;
         }
 
+        public void Increment(int by)
+        {
+            this.Count += by;
+            this.Inventory.OnStackAmtChange?.Invoke(this);
+        }
+
         public static InventoryItem operator ++(InventoryItem item)
         {
             item.Count++;
             item.Inventory.OnStackAmtChange?.Invoke(item);
             return item;
+        }
+
+        public static InventoryItem operator +(InventoryItem item1, InventoryItem item2)
+        {
+            item1.Count += item2.Count;
+            item1.Inventory.OnStackAmtChange?.Invoke(item1);
+            item2.Inventory.Remove(item2);
+            return item1;
         }
 
         public static InventoryItem operator --(InventoryItem item)

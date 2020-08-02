@@ -1,6 +1,6 @@
 {
   "Name": "Red Jumper",
-  "InventoryIconPath": "RedJumper",
+  "InventoryIconPath": "Sprites/RedJumper",
   "EquipmentType": "Chest",
-  "MeshPath": "MaleRedJumper"
+  "MeshPath": "SkinnedMeshes/MaleRedJumperMesh"
 }

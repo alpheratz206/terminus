@@ -109,10 +109,17 @@ namespace Scripts
         {
             var vectorDirection = (focus.position - transform.position).normalized;
 
-            Quaternion newRotation
+            var lookRotationViewingVector = new Vector3(vectorDirection.x, 0f, vectorDirection.z);
+
+            Quaternion newRotation = Quaternion.identity;
+
+            if (lookRotationViewingVector.sqrMagnitude != 0)
+            {
+                newRotation
                 = Quaternion.LookRotation(
-                    new Vector3(vectorDirection.x, 0f, vectorDirection.z)
+                    lookRotationViewingVector
                 );
+            }
 
             transform.rotation
                 = Quaternion.Slerp(

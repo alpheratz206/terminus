@@ -1,6 +1,6 @@
 {
   "Name": "Sun Hat",
-  "InventoryIconPath": "Sun_Hat",
+  "InventoryIconPath": "Sprites/Sun_Hat",
   "EquipmentType": "Head",
-  "MeshPath": "SunHatMesh"
+  "MeshPath": "SkinnedMeshes/SunHatMesh"
 }
