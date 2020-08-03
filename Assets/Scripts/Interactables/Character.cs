@@ -26,12 +26,13 @@ namespace Scripts.Interactables
 
         public override string ActionName => $"Talk to {name}";
 
-        public override bool IsAccessible => true; //is hostile
-
         protected override void OnInteract(Transform interestedParty)
             => DialogueController.Instance.BeginDialogue(DialogueTree);
 
         protected override void OnStopInteract()
             => DialogueController.Instance.EndDialogue();
+
+        public override bool IsAccessible(Transform InterestedParty)
+            => true; //something to do with enemy
     }
 }

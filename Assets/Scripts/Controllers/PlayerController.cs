@@ -74,7 +74,7 @@ namespace Scripts.Controllers
 
         private void HandleRightClick(RaycastHit hit)
         {
-            var possibleInteracts = hit.collider.GetComponents<Interactable>().Where(x => x.IsAccessible);
+            var possibleInteracts = hit.collider.GetComponents<Interactable>().Where(x => x.IsAccessible(transform));
 
             if (possibleInteracts.Count() == 1)
                 actor.SetFocus(possibleInteracts.First());

@@ -13,9 +13,11 @@ namespace Scripts.Interactables
     {
         public override string ActionName => $"Open {name}";
 
-        public override bool IsAccessible => true;
+        public override bool IsAccessible(Transform InterestedParty)
+            => InterestedParty.TryGetComponent(out userInventory);
 
         private Inventory inv;
+        private Inventory userInventory;
         private InventoryRenderer invRenderer;
 
         private void Start()
@@ -26,7 +28,7 @@ namespace Scripts.Interactables
 
         protected override void OnInteract(Transform interestedParty)
         {
-            if(interestedParty.TryGetComponent(out Inventory userInventory))
+            if(userInventory != null || interestedParty.TryGetComponent(out userInventory))
             {
                 inv.OverrideOnItemUse =
                     x => ItemUseOverride(x, userInventory);
@@ -50,5 +52,6 @@ namespace Scripts.Interactables
             inv.OverrideOnItemUse = null;
             invRenderer.SetActive(false);
         }
+
     }
 }

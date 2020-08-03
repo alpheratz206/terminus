@@ -31,7 +31,7 @@ namespace Scripts.Interactables
         #endregion
 
         public abstract string ActionName { get; }
-        public abstract bool IsAccessible { get; }
+        public abstract bool IsAccessible(Transform InterestedParty);
 
         private IDictionary<Guid, IEnumerator> interestedParties
             = new Dictionary<Guid, IEnumerator>();

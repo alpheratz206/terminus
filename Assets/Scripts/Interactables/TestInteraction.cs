@@ -11,7 +11,7 @@ namespace Scripts.Interactables
     {
         public override string ActionName => "Test interact";
 
-        public override bool IsAccessible => true;
+        public override bool IsAccessible(Transform InterestedParty) => true;
 
         protected override void OnInteract(Transform interestedParty)
         {

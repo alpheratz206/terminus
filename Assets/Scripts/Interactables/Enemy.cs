@@ -22,7 +22,8 @@ namespace Scripts.Interactables
 
         public override string ActionName => $"Attack {name}";
 
-        public override bool IsAccessible => isHostile;
+        public override bool IsAccessible(Transform InterestedParty)
+            => isHostile && InterestedParty != transform;
 
         protected override void OnInteract(Transform interestedParty)
         {
@@ -54,5 +55,6 @@ namespace Scripts.Interactables
             while (stats.TakeDamage(enemyStats.damage))
                 yield return new WaitForSeconds(enemyStats.attackCooldown);
         }
+
     }
 }
