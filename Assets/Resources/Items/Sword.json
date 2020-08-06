@@ -1,0 +1,7 @@
+{
+  "ID":  "Sword",
+  "Name": "Iron Sword",
+  "InventoryIconPath": "Sprites/cross",
+  "EquipmentType": "HandItemR",
+  "MeshPath": "Meshes/Sword"
+}

@@ -13,6 +13,8 @@ namespace Enums
         Chest = 2,
         Hands = 3,
         Legs = 4,
-        Feet = 5
+        Feet = 5,
+        HandItemL = 6,
+        HandItemR = 7
     }
 }

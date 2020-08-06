@@ -175,7 +175,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 }
 
 [CustomPropertyDrawer(typeof(EquipmentMeshDictionary))]
-public class EquipmentMeshDictionaryDrawer : DictionaryDrawer<EquipmentType, SkinnedMeshRenderer> { }
+public class EquipmentMeshDictionaryDrawer : DictionaryDrawer<EquipmentType, Renderer> { }
 
 //[CustomPropertyDrawer(typeof(MyDictionary2))]
 //public class MyDictionaryDrawer2 : DictionaryDrawer<KeyCode, GameObject> { }

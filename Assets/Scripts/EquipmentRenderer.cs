@@ -1,5 +1,6 @@
 ﻿using Enums;
 using Models;
+using Models.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,12 @@ namespace Scripts
 {
     public class EquipmentRenderer : MonoBehaviour
     {
-        [Serializable] public class EquipmentMeshDictionary : SerializableDictionary<EquipmentType, SkinnedMeshRenderer> { }
+        [Serializable] public class EquipmentMeshDictionary : SerializableDictionary<EquipmentType, Renderer> { }
 
         public SkinnedMeshRenderer baseMesh;
+
+        public Transform RightHandItemBone;
+        public Transform LeftHandItemBone;
 
         public EquipmentMeshDictionary defaultEquipment
             = new EquipmentMeshDictionary();
@@ -42,18 +46,41 @@ namespace Scripts
         private void Equip(Equipment equipment)
             => Equip(equipment.Type, equipment.Mesh);
 
-        private void Equip(EquipmentType slot, SkinnedMeshRenderer mesh)
+        private void Equip(EquipmentType slot, Renderer mesh)
         {
             var newMesh = Instantiate(mesh);
 
+            var skinnedMesh = newMesh as SkinnedMeshRenderer;
+            var staticMesh = newMesh as MeshRenderer;
+
             TryUnequip(slot);
 
-            Equipment.Add(slot, newMesh);
+            if(skinnedMesh != null)
+            {
+                Equipment.Add(slot, skinnedMesh);
 
-            newMesh.transform.parent = transform;
+                skinnedMesh.transform.parent = transform;
 
-            newMesh.bones = baseMesh.bones;
-            newMesh.rootBone = baseMesh.rootBone;
+                skinnedMesh.bones = baseMesh.bones;
+                skinnedMesh.rootBone = baseMesh.rootBone;
+            }
+
+            if(staticMesh != null)
+            {
+                Equipment.Add(slot, staticMesh);
+
+                staticMesh.transform.SetParent(
+                    slot == EquipmentType.HandItemR ? 
+                        RightHandItemBone :
+                        LeftHandItemBone,
+                    false
+                );
+            }
+        }
+
+        private void Equip(EquipmentType slot, MeshRenderer mesh)
+        {
+
         }
 
         private void OnUnequip(Equipment item)
@@ -64,7 +91,7 @@ namespace Scripts
 
         private void TryUnequip(EquipmentType slot)
         {
-            if (Equipment.TryGetValue(slot, out SkinnedMeshRenderer mesh))
+            if (Equipment.TryGetValue(slot, out Renderer mesh))
             {
                 Equipment.Remove(slot);
                 Destroy(mesh.gameObject);
@@ -73,7 +100,7 @@ namespace Scripts
 
         private void TryEquipDefault(EquipmentType slot)
         {
-            if (defaultEquipment.TryGetValue(slot, out SkinnedMeshRenderer defaultMesh))
+            if (defaultEquipment.TryGetValue(slot, out Renderer defaultMesh))
             {
                 Equip(slot, defaultMesh);
             }
