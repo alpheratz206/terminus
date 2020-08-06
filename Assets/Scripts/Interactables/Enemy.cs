@@ -52,8 +52,21 @@ namespace Scripts.Interactables
         {
             var enemyStats = interestedParty.GetComponent<Stats>();
 
+            interestedParty.GetChild(3).TryGetComponent(out Animator enemyAnimator);
+
             while (stats.TakeDamage(enemyStats.damage))
+            {
+                if (enemyAnimator)
+                    StartCoroutine(PlayAnimation(enemyAnimator, 1));
                 yield return new WaitForSeconds(enemyStats.attackCooldown);
+            }
+        }
+
+        private IEnumerator PlayAnimation(Animator enemyAnimator, float duration)
+        {
+            enemyAnimator.SetInteger("attackAnim", 1);
+            yield return new WaitForSeconds(duration);
+            enemyAnimator.SetInteger("attackAnim", 0);
         }
 
     }
