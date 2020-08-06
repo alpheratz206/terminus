@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Enums;
+using Models.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +13,10 @@ namespace Scripts
     [RequireComponent(typeof(NavMeshAgent))]
     public class AgentAnimatorController : MonoBehaviour
     {
-        public string locomationBlendVarName = "speedPercent";
+        private string locomationBlendVarName = "speedPercent";
         public float locomotionDampTime = .1f;
+
+        private string bCombatVarName = "bCombat";
 
         private NavMeshAgent agent;
         private Animator animator;
@@ -21,6 +25,26 @@ namespace Scripts
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponentInChildren<Animator>();
+
+            if(TryGetComponent(out EquipmentRig rig))
+            {
+                rig.OnItemAdded += x => OnItemEquipped(x);
+                rig.OnItemRemoved += x => OnItemRemoved(x);
+            }
+        }
+
+        private void OnItemRemoved(Equipment equipment)
+        {
+            if (equipment?.Type == EquipmentType.HandItemR)
+                animator.SetBool(bCombatVarName, false);
+        }
+
+        private void OnItemEquipped(InventoryItem invItem)
+        {
+            var equipment = invItem.Item as Equipment;
+
+            if (equipment?.Type == EquipmentType.HandItemR)
+                animator.SetBool(bCombatVarName, true);
         }
 
         private void Update()

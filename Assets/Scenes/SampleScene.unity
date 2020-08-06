@@ -5746,12 +5746,6 @@ Transform:
   m_Father: {fileID: 610429411673928860}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &758657832461413057 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-    type: 3}
-  m_PrefabInstance: {fileID: 2938930063451037798}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &829338943895727432
 Transform:
   m_ObjectHideFlags: 0
@@ -5972,75 +5966,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1001 &2938930063451037798
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 3193461058328811352}
-    m_Modifications:
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.00033288766
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.00010509883
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.0010543497
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.07641694
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7014677
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.6998188
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.111163326
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2472025486429588135, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2489252527757798047, guid: dbac53680aaf27143993be195f5e31a7,
-        type: 3}
-      propertyPath: m_Name
-      value: Sword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: dbac53680aaf27143993be195f5e31a7, type: 3}
 --- !u!4 &2952646947999692378
 Transform:
   m_ObjectHideFlags: 0
@@ -6118,7 +6043,6 @@ Transform:
   m_LocalScale: {x: 0.9999999, y: 1, z: 0.99999994}
   m_Children:
   - {fileID: 6708324525526517148}
-  - {fileID: 758657832461413057}
   m_Father: {fileID: 2952646947999692378}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7001,22 +6925,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4a95cdb79a6194c99ac41437732f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMesh: {fileID: 3257505276906025803}
+  baseMesh: {fileID: 2083398915}
   RightHandItemBone: {fileID: 3193461058328811352}
   LeftHandItemBone: {fileID: 3773280510973331660}
   defaultEquipment:
-    _Buckets: ffffffff02000000ffffffff
-    _HashCodes: ffffffffffffffff01000000
-    _Next: ffffffff00000000ffffffff
+    _Buckets: ffffffffffffffffffffffff
+    _HashCodes: ffffffffffffffffffffffff
+    _Next: 01000000ffffffff00000000
     _Count: 3
-    _Version: 36
-    _FreeList: 1
-    _FreeCount: 2
-    _Keys: 000000000000000001000000
+    _Version: 37
+    _FreeList: 2
+    _FreeCount: 3
+    _Keys: 000000000000000000000000
     _Values:
     - {fileID: 0}
     - {fileID: 0}
-    - {fileID: 5447328695771511888, guid: 3acb20a23d596714db14d58e7a6839c3, type: 3}
+    - {fileID: 0}
 --- !u!4 &7593365453591504251
 Transform:
   m_ObjectHideFlags: 0
