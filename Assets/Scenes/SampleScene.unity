@@ -2667,7 +2667,7 @@ PrefabInstance:
     - target: {fileID: 8266350814595800488, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.38731
+      value: 10.2
       objectReference: {fileID: 0}
     - target: {fileID: 8266350814595800488, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
@@ -2677,7 +2677,7 @@ PrefabInstance:
     - target: {fileID: 8266350814595800488, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 49.10384
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8266350814595800488, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
@@ -2718,6 +2718,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266350814595800491, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
+        type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266350814595800491, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
+        type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266350814595800491, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
+        type: 3}
+      propertyPath: attackCooldown
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8266350814595800492, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
@@ -6912,7 +6927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &7550892812618578527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6933,7 +6948,7 @@ MonoBehaviour:
     _HashCodes: ffffffffffffffffffffffff
     _Next: 01000000ffffffff00000000
     _Count: 3
-    _Version: 37
+    _Version: 45
     _FreeList: 2
     _FreeCount: 3
     _Keys: 000000000000000000000000
@@ -7075,7 +7090,7 @@ PrefabInstance:
     - target: {fileID: 6165404776058201968, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8266350813551445254, guid: 13cb1d52e9d61cc4d93b36ab280c746c,
         type: 3}

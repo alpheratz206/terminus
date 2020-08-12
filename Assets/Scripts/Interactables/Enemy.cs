@@ -56,8 +56,8 @@ namespace Scripts.Interactables
 
             while (stats.TakeDamage(enemyStats.damage))
             {
-                if (enemyAnimator)
-                    StartCoroutine(PlayAnimation(enemyAnimator, 1));
+                //if (enemyAnimator)
+                //    StartCoroutine(PlayAnimation(enemyAnimator, 1));
                 yield return new WaitForSeconds(enemyStats.attackCooldown);
             }
         }

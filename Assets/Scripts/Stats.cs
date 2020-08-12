@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Assets.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +11,31 @@ namespace Scripts
 {
     public class Stats : MonoBehaviour
     {
+        [Header("Combat")]
+
         public int damage = 10;
         public int attackCooldown = 2;
-
         public int damageThreshhold = 0;
-
         public int maxHealth = 100;
-        [SerializeField]
-        private int Health;
+
+        private Stat<int> HealthStat;
+
+        [Header("Skills")]
+        public int identity = 10;
 
         private void Start()
         {
-            Health = maxHealth;
+            HealthStat = new Stat<int>(0, maxHealth);
         }
 
         public bool TakeDamage(int incomingDamage)
         {
             int damageTaken = CalculateDamage(incomingDamage);
 
-            if (Health <= damageTaken)
+            HealthStat.Value -= damageTaken;
+
+            if (HealthStat.Value == HealthStat.minValue)
             {
-                Health = 0;
                 if (TryGetComponent(out Actor thisActor))
                     thisActor.RemoveFocus();
                 OnDeath();
@@ -38,7 +43,6 @@ namespace Scripts
             }
 
             Debug.Log($"{name} takes {damageTaken} damage!");
-            Health -= damageTaken;
             return true;
         }
 
@@ -52,12 +56,10 @@ namespace Scripts
 
         public void Heal(int restored)
         {
-            Health += restored;
-            if (Health > maxHealth)
-            {
-                Debug.Log($"{name} healed by {restored - Health + maxHealth}.");
-                Health = maxHealth;
-            }
+            HealthStat.Value += restored;
+
+            if (HealthStat.Value == HealthStat.maxValue)
+                Debug.Log($"{name} healed to maximum!");
             else
                 Debug.Log($"{name} healed by {restored}.");
         }
