@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static Scripts.Executor;
 
 namespace Scripts
 {
@@ -35,7 +36,7 @@ namespace Scripts
             }
 
             foreach(var id in startingItems)
-                Add(ItemRepository.Get(id));
+                Add(itemRepository.Get(id));
         }
 
         public void Add(InventoryItem item)

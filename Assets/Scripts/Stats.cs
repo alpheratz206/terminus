@@ -18,23 +18,25 @@ namespace Scripts
         public int damageThreshhold = 0;
         public int maxHealth = 100;
 
-        private Stat<int> HealthStat;
+        public List<Stat<IComparable>> AllStats { get; set; }
 
         [Header("Skills")]
+
         public int identity = 10;
 
         private void Start()
         {
-            HealthStat = new Stat<int>(0, maxHealth);
+            var Health = new Stat<int>("Health", 0, maxHealth);
+            AllStats.Add(Health as Stat<IComparable>);
         }
 
         public bool TakeDamage(int incomingDamage)
         {
             int damageTaken = CalculateDamage(incomingDamage);
 
-            HealthStat.Value -= damageTaken;
+            Health.Value -= damageTaken;
 
-            if (HealthStat.Value == HealthStat.minValue)
+            if (Health.Value == Health.minValue)
             {
                 if (TryGetComponent(out Actor thisActor))
                     thisActor.RemoveFocus();
@@ -56,9 +58,9 @@ namespace Scripts
 
         public void Heal(int restored)
         {
-            HealthStat.Value += restored;
+            Health.Value += restored;
 
-            if (HealthStat.Value == HealthStat.maxValue)
+            if (Health.Value == Health.maxValue)
                 Debug.Log($"{name} healed to maximum!");
             else
                 Debug.Log($"{name} healed by {restored}.");

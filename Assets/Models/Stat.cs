@@ -8,8 +8,10 @@ using UnityEngine;
 
 namespace Assets.Models
 {
-    public class Stat<T> where T : IComparable<T>
+    public class Stat<T> where T : IComparable
     {
+        public string Name { get; set; }
+
         public T minValue;
         public T maxValue;
 
@@ -39,10 +41,13 @@ namespace Assets.Models
         #region Constructors
 
         public Stat(
+            string name,
             T minValue,
             T maxValue,
             T startingValue)
         {
+            this.Name = name;
+
             this.minValue = minValue;
             this.maxValue = maxValue;
 
@@ -50,9 +55,12 @@ namespace Assets.Models
         }
 
         public Stat(
+            string name,
             T minValue,
             T maxValue)
         {
+            this.Name = name;
+
             this.minValue = minValue;
             this.maxValue = maxValue;
 

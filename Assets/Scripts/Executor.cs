@@ -9,8 +9,8 @@ namespace Scripts
 {
     public class Executor : MonoBehaviour
     {
-        #region Singleton
         public static Executor Instance;
+        public static ItemRepository itemRepository;
 
         private void Awake()
         {
@@ -23,9 +23,10 @@ namespace Scripts
             {
                 Destroy(gameObject);
             }
-            ItemRepository.Init();
+
+            itemRepository = new ItemRepository();
+            itemRepository.Init();
         }
-        #endregion
 
     }
 }

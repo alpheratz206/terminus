@@ -11,40 +11,10 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public static class ItemRepository
+    public class ItemRepository : Repository<Item>
     {
-        private static string ItemsFolderName => "Items";
-
-        private static Dictionary<string, JObject> AllItems
-            = new Dictionary<string, JObject>();
-
-        public static void Init()
-        {
-            var allJson = Resources.LoadAll<TextAsset>(ItemsFolderName);
-
-            foreach(var json in allJson)
-            {
-                var jObj = JsonConvert.DeserializeObject<JObject>(json.text);
-
-                if(jObj.TryGetValue("ID", out var id))
-                {
-                    AllItems.Add(id.Value<string>(), jObj);
-                }
-            }
-        } 
-
-        public static Item Get(string ID)
-        {
-            if(AllItems.TryGetValue(ID, out JObject foundItem))
-            {
-                return GetAsType(foundItem);
-            }
-
-            Debug.Log($"Item with ID of {ID} not found.");
-            return new Item();
-        }
-
-        private static Item GetAsType(JObject jObj)
+        protected override string FolderName => "Items";
+        protected override Item GetAsType(JObject jObj)
         {
             if (jObj.ContainsKey("EffectType"))
                 return jObj.ToObject<Consumable>();

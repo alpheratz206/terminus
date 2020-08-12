@@ -1,5 +1,6 @@
 ﻿using Enums;
 using Newtonsoft.Json;
+using Scripts;
 using Scripts.Controllers;
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,15 @@ namespace Models
             {
                 { DialoguePredicateType.InParty, x => PartyController.Instance.IsInParty(x) },
                 { DialoguePredicateType.NotInParty, x => !PartyController.Instance.IsInParty(x) },
+                { DialoguePredicateType.HasIdentity, x => HasStat(x, "Identity") }
             };
 
+        private static bool HasStat(GameObject player, string statName)
+        {
+            if (!player.TryGetComponent(out Stats stats))
+                return false;
+
+            return true;
+        }
     }
 }

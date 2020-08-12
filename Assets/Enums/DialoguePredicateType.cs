@@ -9,6 +9,7 @@ namespace Enums
     public enum DialoguePredicateType
     {
         InParty,
-        NotInParty
+        NotInParty,
+        HasIdentity
     }
 }

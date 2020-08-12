@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static Scripts.Executor;
 
 namespace Scripts.Interactables
 {
@@ -26,7 +27,7 @@ namespace Scripts.Interactables
 
         private void Start()
         {
-            item = ItemRepository.Get(itemID);
+            item = itemRepository.Get(itemID);
         }
 
         protected override void OnInteract(Transform interestedParty)

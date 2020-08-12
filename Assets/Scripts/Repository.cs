@@ -11,14 +11,16 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public class Repository<T> where T : new()
+    public abstract class Repository<T> where T : new()
     {
-        private Dictionary<string, JObject> AllItems
+        protected abstract string FolderName { get; }
+
+        private Dictionary<string, JObject> AllRecords
             = new Dictionary<string, JObject>();
 
-        public void Init(string folderName)
+        public void Init()
         {
-            var allJson = Resources.LoadAll<TextAsset>(folderName);
+            var allJson = Resources.LoadAll<TextAsset>(FolderName);
 
             foreach (var json in allJson)
             {
@@ -26,14 +28,14 @@ namespace Scripts
 
                 if (jObj.TryGetValue("ID", out var id))
                 {
-                    AllItems.Add(id.Value<string>(), jObj);
+                    AllRecords.Add(id.Value<string>(), jObj);
                 }
             }
         }
 
         public T Get(string ID)
         {
-            if (AllItems.TryGetValue(ID, out JObject foundItem))
+            if (AllRecords.TryGetValue(ID, out JObject foundItem))
             {
                 return GetAsType(foundItem);
             }
@@ -42,7 +44,7 @@ namespace Scripts
             return new T();
         }
 
-        private T GetAsType(JObject jObj)
+        protected virtual T GetAsType(JObject jObj)
         {
             return jObj.ToObject<T>();
         }
