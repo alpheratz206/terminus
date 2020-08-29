@@ -11,6 +11,8 @@ namespace Scripts
 {
     public class Stats : MonoBehaviour
     {
+        public List<Stat<int>> AllStats { get; set; } = new List<Stat<int>>();
+
         [Header("Combat")]
 
         public int damage = 10;
@@ -18,21 +20,25 @@ namespace Scripts
         public int damageThreshhold = 0;
         public int maxHealth = 100;
 
-        public List<Stat<IComparable>> AllStats { get; set; }
+        public Stat<int> Health => AllStats.Where(x => x.Name == "Health").FirstOrDefault();
 
         [Header("Skills")]
 
-        public int identity = 10;
+        public int maxIdentity = 10;
+        public Stat<int> Identity => AllStats.Where(x => x.Name == "Identity").FirstOrDefault();
 
         private void Start()
         {
             var Health = new Stat<int>("Health", 0, maxHealth);
-            AllStats.Add(Health as Stat<IComparable>);
+            AllStats.Add(Health);
+
+            var Identity = new Stat<int>("Identity", 0, maxIdentity);
+            AllStats.Add(Identity);
         }
 
         public bool TakeDamage(int incomingDamage)
         {
-            int damageTaken = CalculateDamage(incomingDamage);
+            var damageTaken = CalculateDamage(incomingDamage);
 
             Health.Value -= damageTaken;
 

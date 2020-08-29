@@ -24,6 +24,8 @@ namespace Models
         public string Predicate { get; set; }
         public List<string> Predicates { get; set; }
             = new List<string>();
+        public string PredicateName { get; set; }
+        public int? PredicateValue { get; set; }
 
 
         public bool Display(GameObject obj = null)
@@ -72,15 +74,17 @@ namespace Models
             {
                 { DialoguePredicateType.InParty, x => PartyController.Instance.IsInParty(x) },
                 { DialoguePredicateType.NotInParty, x => !PartyController.Instance.IsInParty(x) },
-                { DialoguePredicateType.HasIdentity, x => HasStat(x, "Identity") }
+                { DialoguePredicateType.HasStat, x => true /*HasStat(x)*/ }
             };
 
-        private static bool HasStat(GameObject player, string statName)
-        {
-            if (!player.TryGetComponent(out Stats stats))
-                return false;
+        //private bool HasStat(GameObject player)
+        //{
+        //    if (!player.TryGetComponent(out Stats stats))
+        //        return false;
 
-            return true;
-        }
+        //    if(string.IsNullOrEmpty(PredicateName) || !PredicateValue.HasValue)
+
+        //    return true;
+        //}
     }
 }

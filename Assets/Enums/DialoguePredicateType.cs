@@ -10,6 +10,6 @@ namespace Enums
     {
         InParty,
         NotInParty,
-        HasIdentity
+        HasStat
     }
 }
