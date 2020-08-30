@@ -101,7 +101,11 @@
           "Length": 1
         }
       ],
-      "Predicate":  "NotInParty",
+      "Predicates": [
+        {
+          "Key": "NotInParty"
+        }
+      ],
       "Actions": [
         "JoinParty",
         "EndDialogue"
@@ -115,7 +119,11 @@
           "Length": 1
         }
       ],
-      "Predicate": "InParty",
+      "Predicates": [
+        {
+          "Key": "InParty"
+        }
+      ],
       "Actions": [
         "LeaveParty",
         "EndDialogue"
@@ -131,6 +139,22 @@
       ],
       "Persist": true,
       "Action": "EndDialogue"
+    },
+    {
+      "Prompt": "I am very healthy.",
+      "Lines": [
+        {
+          "Text": "Weird flex, but okay.",
+          "Length": "1"
+        }
+      ],
+      "Predicates": [
+        {
+          "Key": "SkillCheck",
+          "Stat": "Health",
+          "Value": 80
+        }
+      ]
     }
   ],
   "NoDialogueGreeting":  "Await the hour of justice!"

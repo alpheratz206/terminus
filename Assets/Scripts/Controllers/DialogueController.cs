@@ -147,7 +147,7 @@ namespace Scripts.Controllers
 
             if (node.Children != null)
             {
-                currentOptions = currentOptions.Where(x => x.Persist && x.Display()).ToList();
+                currentOptions = currentOptions.Where(x => x.Persist && x.Display(conversation.Owner)).ToList();
                 AddOptions(node.Children);
             }
 

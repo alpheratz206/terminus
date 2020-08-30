@@ -1,4 +1,5 @@
-﻿using Scripts;
+﻿using Enums;
+using Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Assets.Models
 {
     public class Stat<T> where T : IComparable
     {
-        public string Name { get; set; }
+        public StatName Name { get; set; }
 
         public T minValue;
         public T maxValue;
@@ -41,21 +42,16 @@ namespace Assets.Models
         #region Constructors
 
         public Stat(
-            string name,
+            StatName name,
             T minValue,
             T maxValue,
-            T startingValue)
+            T startingValue) : this(name, minValue, maxValue)
         {
-            this.Name = name;
-
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-
             value = startingValue;
         }
 
         public Stat(
-            string name,
+            StatName name,
             T minValue,
             T maxValue)
         {

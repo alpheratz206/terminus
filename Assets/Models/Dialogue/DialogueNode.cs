@@ -1,4 +1,5 @@
 ﻿using Enums;
+using Models.Dialogue;
 using Newtonsoft.Json;
 using Scripts;
 using Scripts.Controllers;
@@ -21,23 +22,16 @@ namespace Models
         public string Action { get; set; }
         public List<string> Actions { get; set; }
             = new List<string>();
-        public string Predicate { get; set; }
-        public List<string> Predicates { get; set; }
-            = new List<string>();
-        public string PredicateName { get; set; }
-        public int? PredicateValue { get; set; }
-
+        public IList<DialogueLogic> Predicates { get; set; }
+            = new List<DialogueLogic>();
 
         public bool Display(GameObject obj = null)
         {
-            if (!string.IsNullOrEmpty(Predicate))
-                Predicates.Add(Predicate);
-
-            foreach (string predName in Predicates)
+            foreach (var pred in Predicates)
             {
-                if (Enum.TryParse(predName, out DialoguePredicateType predType)
-                && DialoguePredicateDictionary.TryGetValue(predType, out Func<GameObject, bool> f)
-                && !f(obj))
+                if (Enum.TryParse(pred.Key, out DialoguePredicateType predType)
+                && DialoguePredicateDictionary.TryGetValue(predType, out Func<GameObject, DialogueLogic, bool> f)
+                && !f(obj, pred))
                     return false;
             }
 
@@ -69,22 +63,23 @@ namespace Models
             };
 
         [JsonIgnore]
-        public static Dictionary<DialoguePredicateType, Func<GameObject, bool>> DialoguePredicateDictionary
-            = new Dictionary<DialoguePredicateType, Func<GameObject, bool>>()
+        public static Dictionary<DialoguePredicateType, Func<GameObject, DialogueLogic, bool>> DialoguePredicateDictionary
+            = new Dictionary<DialoguePredicateType, Func<GameObject, DialogueLogic, bool>>()
             {
-                { DialoguePredicateType.InParty, x => PartyController.Instance.IsInParty(x) },
-                { DialoguePredicateType.NotInParty, x => !PartyController.Instance.IsInParty(x) },
-                { DialoguePredicateType.HasStat, x => true /*HasStat(x)*/ }
+                { DialoguePredicateType.InParty, (speaker, logic) => PartyController.Instance.IsInParty(speaker) },
+                { DialoguePredicateType.NotInParty, (speaker, logic) => !PartyController.Instance.IsInParty(speaker) },
+                { DialoguePredicateType.SkillCheck, (speaker, logic) => PlayerHasStat(logic) }
             };
 
-        //private bool HasStat(GameObject player)
-        //{
-        //    if (!player.TryGetComponent(out Stats stats))
-        //        return false;
+        private static bool PlayerHasStat(DialogueLogic check)
+        {
+            if (!PartyController.Instance.playerCharacter.TryGetComponent(out Stats stats))
+                return false;
 
-        //    if(string.IsNullOrEmpty(PredicateName) || !PredicateValue.HasValue)
+            if (!Enum.TryParse(check.Stat, out StatName statToCheck) || !check.Value.HasValue)
+                return false;
 
-        //    return true;
-        //}
+            return  stats.Get(statToCheck).Value >= check.Value;
+        }
     }
 }

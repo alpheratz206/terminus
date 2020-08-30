@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Enums;
 
 namespace Scripts
 {
     public class Stats : MonoBehaviour
     {
-        public List<Stat<int>> AllStats { get; set; } = new List<Stat<int>>();
+        private List<Stat<int>> AllStats { get; set; } = new List<Stat<int>>();
 
         [Header("Combat")]
 
@@ -20,21 +21,24 @@ namespace Scripts
         public int damageThreshhold = 0;
         public int maxHealth = 100;
 
-        public Stat<int> Health => AllStats.Where(x => x.Name == "Health").FirstOrDefault();
+        public Stat<int> Health => AllStats.Where(x => x.Name == StatName.Health).FirstOrDefault();
 
         [Header("Skills")]
 
-        public int maxIdentity = 10;
-        public Stat<int> Identity => AllStats.Where(x => x.Name == "Identity").FirstOrDefault();
+        public int maxIdentity = 20;
+        public Stat<int> Identity => AllStats.Where(x => x.Name == StatName.Identity).FirstOrDefault();
 
         private void Start()
         {
-            var Health = new Stat<int>("Health", 0, maxHealth);
+            var Health = new Stat<int>(StatName.Health, 0, maxHealth);
             AllStats.Add(Health);
 
-            var Identity = new Stat<int>("Identity", 0, maxIdentity);
+            var Identity = new Stat<int>(StatName.Identity, 0, maxIdentity);
             AllStats.Add(Identity);
         }
+
+        public Stat<int> Get(StatName name)
+            => AllStats.Where(x => x.Name == name).FirstOrDefault();
 
         public bool TakeDamage(int incomingDamage)
         {
