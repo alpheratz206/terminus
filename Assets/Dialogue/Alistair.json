@@ -145,14 +145,63 @@
       "Lines": [
         {
           "Text": "Weird flex, but okay.",
-          "Length": "1"
+          "Length": 1
         }
       ],
       "Predicates": [
         {
           "Key": "SkillCheck",
           "Stat": "Health",
-          "Value": 80
+          "Value": 80,
+          "CheckType": "GreaterThan"
+        }
+      ]
+    },
+    {
+      "Prompt": "I appear to be bleeding slightly.",
+      "Lines": [
+        {
+          "Text": "Oh, you are! Did... did you do that to yourself?",
+          "Length": 1.5
+        },
+        {
+          "Text": "It's only us here, so...",
+          "Length": 1
+        }
+      ],
+      "Predicates": [
+        {
+          "Key": "SkillCheck",
+          "Stat": "Health",
+          "Value": 80,
+          "CheckType": "LessThan"
+        },
+        {
+          "Key": "SkillCheck",
+          "Stat": "Health",
+          "Value": 20,
+          "CheckType": "GreaterThan"
+        }
+      ]
+    },
+    {
+      "Prompt": "I am bleeding profusely.",
+      "Lines": [
+        {
+          "Text": "Fucking hells, man!",
+          "Length": 1
+        },
+        {
+          "Text": "There are potions on the table over there, unless you already took them.",
+          "Length": 2
+        }
+      ],
+      "Predicates": [
+        {
+          "Key": "SkillCheck",
+          "Stat": "Health",
+          "Value": 20,
+          "CheckType": "LessThan"
         }
       ]
     }

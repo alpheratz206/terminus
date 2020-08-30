@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using Assets.Enums;
+using Enums;
 using Models.Dialogue;
 using Newtonsoft.Json;
 using Scripts;
@@ -22,15 +23,15 @@ namespace Models
         public string Action { get; set; }
         public List<string> Actions { get; set; }
             = new List<string>();
-        public IList<DialogueLogic> Predicates { get; set; }
-            = new List<DialogueLogic>();
+        public IList<DialoguePredicate> Predicates { get; set; }
+            = new List<DialoguePredicate>();
 
         public bool Display(GameObject obj = null)
         {
             foreach (var pred in Predicates)
             {
                 if (Enum.TryParse(pred.Key, out DialoguePredicateType predType)
-                && DialoguePredicateDictionary.TryGetValue(predType, out Func<GameObject, DialogueLogic, bool> f)
+                && DialoguePredicateDictionary.TryGetValue(predType, out Func<GameObject, DialoguePredicate, bool> f)
                 && !f(obj, pred))
                     return false;
             }
@@ -63,15 +64,15 @@ namespace Models
             };
 
         [JsonIgnore]
-        public static Dictionary<DialoguePredicateType, Func<GameObject, DialogueLogic, bool>> DialoguePredicateDictionary
-            = new Dictionary<DialoguePredicateType, Func<GameObject, DialogueLogic, bool>>()
+        public static Dictionary<DialoguePredicateType, Func<GameObject, DialoguePredicate, bool>> DialoguePredicateDictionary
+            = new Dictionary<DialoguePredicateType, Func<GameObject, DialoguePredicate, bool>>()
             {
                 { DialoguePredicateType.InParty, (speaker, logic) => PartyController.Instance.IsInParty(speaker) },
                 { DialoguePredicateType.NotInParty, (speaker, logic) => !PartyController.Instance.IsInParty(speaker) },
                 { DialoguePredicateType.SkillCheck, (speaker, logic) => PlayerHasStat(logic) }
             };
 
-        private static bool PlayerHasStat(DialogueLogic check)
+        private static bool PlayerHasStat(DialoguePredicate check)
         {
             if (!PartyController.Instance.playerCharacter.TryGetComponent(out Stats stats))
                 return false;
@@ -79,7 +80,16 @@ namespace Models
             if (!Enum.TryParse(check.Stat, out StatName statToCheck) || !check.Value.HasValue)
                 return false;
 
-            return  stats.Get(statToCheck).Value >= check.Value;
+            if (!Enum.TryParse(check.CheckType, out CheckType checkType))
+                checkType = CheckType.GreaterThanOrEqualTo;
+
+            //can't use expression because Unity is too dumb
+            switch(checkType)
+            {
+                case CheckType.GreaterThanOrEqualTo: return stats.Get(statToCheck).Value >= check.Value;
+                case CheckType.LessThan: return stats.Get(statToCheck).Value < check.Value;
+                default: return stats.Get(statToCheck).Value >= check.Value;
+            }
         }
     }
 }
