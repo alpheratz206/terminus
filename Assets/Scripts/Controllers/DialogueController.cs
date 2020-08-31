@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Helpers;
+using Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,10 +47,22 @@ namespace Scripts.Controllers
 
         #region Logic
 
-        private DialogueTree conversation;
+        public DialogueTree Conversation;
 
         private List<DialogueNode> currentOptions
             = new List<DialogueNode>();
+
+        public IList<Action> onDialogueStart
+            = new List<Action>();
+
+        public IList<Action> onDialogueDecisionTime
+            = new List<Action>();
+
+        public IList<Action> onDialogueDecisionMade
+            = new List<Action>();
+
+        public IList<Action> onDialogueEnd
+            = new List<Action>();
 
         #endregion
 
@@ -61,7 +74,7 @@ namespace Scripts.Controllers
 
         public void BeginDialogue(DialogueTree conversation)
         {
-            this.conversation = conversation;
+            this.Conversation = conversation;
 
             header.GetComponentInChildren<TextMeshProUGUI>().text = conversation.Name;
 
@@ -71,11 +84,28 @@ namespace Scripts.Controllers
                 return;
             }
 
+            onDialogueStart.InvokeAll();
+
+            if (Conversation.Locking)
+            {
+                WaitingForDecision = WaitForDecisionPoint(3);
+                StartCoroutine(WaitingForDecision); // generate delay from player stats
+            }
+            
             AddOptions(conversation.Dialogue);
 
             RefreshUI();
 
             dialogueUI.SetActive(true);
+        }
+
+        private IEnumerator WaitingForDecision;
+
+        private IEnumerator WaitForDecisionPoint(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            onDialogueDecisionTime.InvokeAll();
         }
 
         public void EndDialogue()
@@ -106,6 +136,9 @@ namespace Scripts.Controllers
 
         private void EnterNode(DialogueNode node)
         {
+            StopCoroutine(WaitingForDecision);
+            onDialogueDecisionMade.InvokeAll();
+
             foreach (Transform child in optionsList.transform)
             {
                 if (child.gameObject.tag == "DialogueOption")
@@ -140,14 +173,14 @@ namespace Scripts.Controllers
 
         private void BranchDialogue(DialogueNode node)
         {
-            node.ExecuteAction(conversation.Owner);
+            node.ExecuteAction(Conversation.Owner);
 
             if (node.Siblings != null)
                 AddOptions(node.Siblings);
 
             if (node.Children != null)
             {
-                currentOptions = currentOptions.Where(x => x.Persist && x.Display(conversation.Owner)).ToList();
+                currentOptions = currentOptions.Where(x => x.Persist && x.Display(Conversation.Owner)).ToList();
                 AddOptions(node.Children);
             }
 
@@ -161,6 +194,6 @@ namespace Scripts.Controllers
         }
 
         private void AddOptions(IEnumerable<DialogueNode> options)
-            => currentOptions.AddRange(options.Where(x => x.Display(conversation.Owner)));
+            => currentOptions.AddRange(options.Where(x => x.Display(Conversation.Owner)));
     }
 }

@@ -1,0 +1,52 @@
+{
+  "Name": "Test Companion",
+  "Dialogue": [
+    {
+      "Prompt": "Join my party.",
+      "Lines": [
+        {
+          "Text": "Let us venture forth!",
+          "Length": 1
+        }
+      ],
+      "Predicates": [
+        {
+          "Key": "NotInParty"
+        }
+      ],
+      "Actions": [
+        "JoinParty",
+        "EndDialogue"
+      ]
+    },
+    {
+      "Prompt": "Leave my party.",
+      "Lines": [
+        {
+          "Text": "Fuck you!",
+          "Length": 1
+        }
+      ],
+      "Predicates": [
+        {
+          "Key": "InParty"
+        }
+      ],
+      "Actions": [
+        "LeaveParty",
+        "EndDialogue"
+      ]
+    },
+    {
+      "Prompt": "Goodbye.",
+      "Lines": [
+        {
+          "Text": "Be seeing you!",
+          "Length": 1
+        }
+      ],
+      "Persist": true,
+      "Action": "EndDialogue"
+    }
+  ]
+}

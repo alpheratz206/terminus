@@ -15,10 +15,12 @@ namespace Models
         public string Name { get; set; }
         public IList<DialogueNode> Dialogue { get; set; }
         public string NoDialogueGreeting { get; set; }
+        public bool Locking { get; set; }
 
         public DialogueTree()
         {
             NoDialogueGreeting = "Hi there!";
+            Locking = false;
         }
     }
 }

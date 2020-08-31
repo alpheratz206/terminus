@@ -48,10 +48,7 @@ namespace Scripts.Controllers
             if (Input.GetKeyDown(KeyCode.T))
                 GetComponent<Stats>().TakeDamage(7);
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                ToggleGamePlayPause();
-
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.I))
                 TryToggleInventory();
         }
 
@@ -59,14 +56,6 @@ namespace Scripts.Controllers
         {
             if (TryGetComponent(out InventoryRenderer renderer) && renderer.isInit)
                 renderer.ToggleActive();
-        }
-
-        private void ToggleGamePlayPause()
-        {
-            if (Time.timeScale == 1)
-                Time.timeScale = 0;
-            else if (Time.timeScale == 0)
-                Time.timeScale = 1;
         }
 
         private void HandleLeftClick(RaycastHit hit)

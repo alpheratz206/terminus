@@ -30,7 +30,10 @@ namespace Scripts.Interactables
             => DialogueController.Instance.BeginDialogue(DialogueTree);
 
         protected override void OnStopInteract()
-            => DialogueController.Instance.EndDialogue();
+        {
+            if (!DialogueTree.Locking)
+                DialogueController.Instance.EndDialogue();
+        }
 
         public override bool IsAccessible(Transform InterestedParty)
             => true; //something to do with enemy

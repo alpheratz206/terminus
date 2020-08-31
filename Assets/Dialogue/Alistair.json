@@ -1,5 +1,6 @@
 {
   "Name": "Alistair Theirin",
+  "Locking":  true,
   "Dialogue": [
     {
       "Prompt": "What's your name?",
@@ -130,17 +131,6 @@
       ]
     },
     {
-      "Prompt": "Goodbye.",
-      "Lines": [
-        {
-          "Text": "Be seeing you!",
-          "Length": 1
-        }
-      ],
-      "Persist": true,
-      "Action": "EndDialogue"
-    },
-    {
       "Prompt": "I am very healthy.",
       "Lines": [
         {
@@ -204,6 +194,17 @@
           "CheckType": "LessThan"
         }
       ]
+    },
+    {
+      "Prompt": "Goodbye.",
+      "Lines": [
+        {
+          "Text": "Be seeing you!",
+          "Length": 1
+        }
+      ],
+      "Persist": true,
+      "Action": "EndDialogue"
     }
   ],
   "NoDialogueGreeting":  "Await the hour of justice!"
